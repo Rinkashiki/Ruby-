@@ -1,0 +1,47 @@
+<%= stylesheet_link_tag 'users' %>
+  <div class="container form_padding">
+    <br>
+    <div>
+      <%= form_for @user do |f| %>
+        <% flash.each do |type, msg| %>
+          <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
+            <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+            <%= msg %>
+          </div> 
+        <% end %>
+        <% flash.delete(:alert) %>
+        <% if !@user[ :name].blank? %>
+          <h2>Edit User</h2>
+        <% else %>
+          <h2>Sign Up</h2>
+        <% end %>
+        <p>
+          <%= f.label :name %><br>
+          <%= f.text_field :name, size: 60 %>
+        </p>
+        <p>
+          <%= f.label :surname %><br>
+          <%= f.text_field :surname, size: 60 %>
+        </p>
+        <p>
+          <%= f.label :email %><br>
+          <%= f.text_field :email, size: 60 %>
+        </p>
+        <% if logged_in? %>
+          <p class="custom-select">
+            <%= f.label :profile %><br>
+            <%= f.select :profile, @profiles.map{|p| [p.name]} %>
+          </p>
+        <% end %>
+        <% if !@user[ :name].blank? %>
+          <p>
+            <%= f.submit 'Editar', class: 'btn btn-primary' %>
+          </p>
+        <% else %>
+          <p>
+            <%= f.submit 'Dar de alta', class: 'btn btn-primary' %>
+          </p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>

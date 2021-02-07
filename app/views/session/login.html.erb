@@ -1,0 +1,19 @@
+<%= stylesheet_link_tag 'users' %>
+  <div class="container form_padding">
+    <br>
+    <div class="form-group">
+      <%= form_for @user do |f| %>
+        <p class="text-white">
+          <%= f.label :email %><br>
+          <%= f.text_field :email, size: '60x12' %>
+        </p>
+        <p class="text-white">
+          <%= f.label :password %><br>
+          <%= f.text_field :password, size: '60x12' %>
+        </p>
+        <p>
+          <%= f.submit 'Login', class: 'btn btn-primary' %>
+        </p>
+      <% end %>
+    </div>
+  </div>

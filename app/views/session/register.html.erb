@@ -1,0 +1,29 @@
+<%= stylesheet_link_tag 'users' %>
+<body>
+  <div class="container">
+    <br>
+    <div class="form-group">
+      <%= form_for @user do |f| %>
+        <p class="text-white">
+          <%= f.label :name %><br>
+          <%= f.text_field :name, size: '60x12' %>
+        </p>
+        <p class="text-white">
+          <%= f.label :surname %><br>
+          <%= f.text_field :surname, size: '60x12' %>
+        </p>
+        <p class="text-white">
+          <%= f.label :email %><br>
+          <%= f.text_field :email, size: '60x12' %>
+        </p>
+        <p class="custom-select">
+          <%= f.label :profile %><br>
+          <%= f.select :profile, @profiles.map{|p| [p.name]} %>
+        </p>
+        <p>
+          <%= f.submit 'Dar de alta', class: 'btn btn-primary' %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</body>

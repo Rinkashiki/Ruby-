@@ -1,0 +1,25 @@
+<%= stylesheet_link_tag 'users' %>
+<body>
+  <div class="container form_padding">
+    <br>
+    <div>
+      <%= form_for @clip do |c| %>
+        <% flash.each do |type, msg| %>
+          <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
+            <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+            <%= msg %>
+          </div>
+        <% end %>
+        <% flash.delete(:alert) %>
+        <h2>Upload Clip</h2>
+        <p>
+          <%= c.label :video %><br>
+          <%= c.file_field :video, accept: 'video/mp4' %>
+        </p>
+        <p>
+          <%= submit_tag 'Subir clip', class: 'btn btn-primary' %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</body>
