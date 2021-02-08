@@ -20,7 +20,7 @@ class ClipsController < ApplicationController
     # Save clips in DB
     if @clip.save
       flash[ :alert] = 'Successfully uploaded video'
-      redirect_to clips_path
+      #redirect_to clips_path
     else
       flash[ :alert] = c.errors.first.full_message
       redirect_to new_clip_path

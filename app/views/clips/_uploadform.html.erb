@@ -1,8 +1,7 @@
 <%= stylesheet_link_tag 'users' %>
-<body>
   <div class="container form_padding">
     <br>
-    <div>
+    <div id="uploadForm">
       <%= form_for @clip do |c| %>
         <% flash.each do |type, msg| %>
           <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
@@ -14,12 +13,46 @@
         <h2>Upload Clip</h2>
         <p>
           <%= c.label :video %><br>
-          <%= c.file_field :video, accept: 'video/mp4' %>
+          <%= c.file_field :video, accept: 'video/mp4', id: 'fileInput'%>
         </p>
         <p>
-          <%= submit_tag 'Subir clip', class: 'btn btn-primary' %>
+          <%= c.submit 'Subir clip', class: 'btn btn-primary' %>
         </p>
+        <div class="progress">
+          <div id="progressBar" class="progress-bar" role:"progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style:"width: 0%;">
+          0%
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
-</body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('form').on('submit', (function(event){
+        e.preventDefault();
+        var formData = new FormData($('form')[0];)      
+        $.ajax({
+          xhr : function(){
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener('progress', function(e){
+              if(e.lengthComputable){
+                var percent = Math.round((e.loaded / e.total) * 100);
+                $('#progressBar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
+              }
+            });
+            return xhr;
+          },
+          type : 'POST',
+          url : '/clips/new',
+          data : formData,
+          processData : false,
+          contentType : false;
+          success : function(){
+            alert('Video uploaded!');
+          }
+        });
+      });
+    });
+  </script>
