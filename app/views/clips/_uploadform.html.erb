@@ -32,7 +32,8 @@
     $(document).ready(function(){
       $('form').on('submit', (function(event){
         e.preventDefault();
-        var formData = new FormData($('form')[0];)      
+        /var formData = new FormData($('form')[0];)/
+        var formData = document.form_for.video      
         $.ajax({
           xhr : function(){
             var xhr = new window.XMLHttpRequest();
