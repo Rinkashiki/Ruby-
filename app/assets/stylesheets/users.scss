@@ -9,10 +9,6 @@
     text-align: center;
 }
 
-.form_padding {
-    padding-left: 10vw;
-}
-
 h1, h2 {
     color: white;
 }
@@ -82,16 +78,24 @@ a, a:hover, a:focus {
         max-width: 60vw;
     }
 
-    .text_field {
-        max-width: 40vw;
+    .form_padding {
+        padding-left: 5vw;
+    }
+
+    .textBox {
+        width: 60vw;
+    }
+
+    .back_button {
+        margin-left: 2vw;
     }
 
     #sidebar {
         position: sticky;
         top: 10vh;
         border-radius: 6px;
-        min-width: 70vw;
-        max-width: 70vw;
+        min-width: 95vw;
+        max-width: 95vw;
         height: 70vh;
         background: #0275d8;
         color: white;
@@ -99,17 +103,21 @@ a, a:hover, a:focus {
     }
     
     #sidebar.resize {
-        height: 80vh;
+        height: 85vh;
         transition: all 0.2s;
     }
     
     #sidebar.active {
-        margin-left: -70vw;
+        margin-left: -95vw;
     }
     
     #sidebarCollapse.active {
         transition: all 0.6s;
-        margin-left: 60vw;
+        margin-left: 65vw;
+    }
+
+    #sidebarCollapse {
+        margin-left: 15vw;
     }
     
     #adminSubmenu.show {
@@ -137,12 +145,12 @@ a, a:hover, a:focus {
     }
     
     #sidebar .sidebar-header {
-        padding-left: 10vw;
-        padding-top: 2vh;
-        padding-bottom: 2vh;
+        padding-left: 30vw;
+        padding-top: 1vh;
+        padding-bottom: 1vh;
         background: #1151b0;
-        font-size: 1.4em;
-        min-height: 4vh;
+        font-size: 1.6em;
+        height: 9vh;
         border-radius: 6px;
     }
 
@@ -154,13 +162,13 @@ a, a:hover, a:focus {
     #sidebar a {
         padding-top: 3vh;
         padding-bottom: 3vh;
-        padding-left: 10vw;
-        font-size: 1.1em;
+        padding-left: 25vw;
+        font-size: 1.2em;
         display: block;
     }
     
     ul a {
-        font-size: 0.9em !important;
+        font-size: 1.0em !important;
         padding-left: 15vh !important;
         background: #0275d8;
         display: block;
@@ -171,6 +179,11 @@ a, a:hover, a:focus {
         color: white;
         padding: 1vh;
         margin: 5vw;
+    }
+
+    .video {
+        width: 240px;
+        height: 135px;
     }
 }
 
@@ -410,6 +423,18 @@ a, a:hover, a:focus {
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
+    .form_padding {
+        padding-left: 10vw;
+    }
+
+    .textBox {
+        width: 40vw;
+    }
+
+    .back_button {
+        margin-left: 5vw;
+    }
+
     #sidebar {
         position: sticky;
         top: 10vh;
@@ -433,7 +458,11 @@ a, a:hover, a:focus {
     
     #sidebarCollapse.active {
         transition: all 0.6s;
-        margin-left: 15vw;
+        margin-left: 14vw;
+    }
+
+    #sidebarCollapse {
+        margin-left: 2vw;
     }
     
     #adminSubmenu.show {
@@ -497,6 +526,11 @@ a, a:hover, a:focus {
         padding: 1vh;
         margin: 3vw;
     } 
+
+    .video {
+        width: 800px;
+        height: 450px;
+    }
 }
 
 

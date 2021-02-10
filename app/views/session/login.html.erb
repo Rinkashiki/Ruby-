@@ -1,19 +1,25 @@
 <%= stylesheet_link_tag 'users' %>
-  <div class="container form_padding">
-    <br>
-    <div class="form-group">
-      <%= form_for @user do |f| %>
-        <p class="text-white">
-          <%= f.label :email %><br>
-          <%= f.text_field :email, size: '60x12' %>
-        </p>
-        <p class="text-white">
-          <%= f.label :password %><br>
-          <%= f.text_field :password, size: '60x12' %>
-        </p>
-        <p>
-          <%= f.submit 'Login', class: 'btn btn-primary' %>
-        </p>
-      <% end %>
+        <%= form_tag '/login' do %>
+          <% flash.each do |type, msg| %>
+            <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
+              <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+              <%= msg %>
+            </div>
+          <% end %>
+          <% flash.delete(:alert) %>
+          <h1>Log in</h1>
+          <p>
+            <%= label_tag :name %><br>
+            <%= text_field_tag :name %>
+          </p>
+          <p>
+            <%= label_tag :password %><br>
+            <%= text_field_tag :password %>
+          </p>
+          <p>
+            <%= submit_tag 'Login', class: 'btn btn-primary' %>
+          </p>
+        <% end %>
+      </div>
     </div>
   </div>

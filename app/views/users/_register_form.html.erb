@@ -1,7 +1,10 @@
 <%= stylesheet_link_tag 'users' %>
+<% if !logged_in? %>
+  <%= link_to 'Back', '/welcome', class: "btn btn-light back_button" %>
+<% end %>
   <div class="container form_padding">
     <br>
-    <div>
+    <div class="form-group">
       <%= form_for @user do |f| %>
         <% flash.each do |type, msg| %>
           <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
@@ -11,21 +14,21 @@
         <% end %>
         <% flash.delete(:alert) %>
         <% if !@user[ :name].blank? %>
-          <h2>Edit User</h2>
+          <h1>Edit User</h1>
         <% else %>
-          <h2>Sign Up</h2>
+          <h1>Sign Up</h1>
         <% end %>
         <p>
           <%= f.label :name %><br>
-          <%= f.text_field :name%>
+          <%= f.text_field :name, class: "textBox" %>
         </p>
         <p>
           <%= f.label :surname %><br>
-          <%= f.text_field :surname%>
+          <%= f.text_field :surname, class: "textBox" %>
         </p>
         <p>
           <%= f.label :email %><br>
-          <%= f.text_field :email%>
+          <%= f.text_field :email, class: "textBox" %>
         </p>
         <% if logged_in? %>
           <p class="custom-select">
