@@ -1,7 +1,7 @@
 <%= stylesheet_link_tag 'users' %>
 <div class="container">
   <br>
-  <div class="center">
+  <div class="center handheld_display">
     <p>Nombre: <%= @clip.clipName %></p>
     <p>Usuario: <%= @clip.uploadUser %></p>
     <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
