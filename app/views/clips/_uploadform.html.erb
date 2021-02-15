@@ -31,9 +31,7 @@
   <script type="text/javascript">
     $(document).ready(function(){
       $('#uploadForm').submit(function(event){
-        event.preventDefault();
-        var formData = new FormData($("#uploadVideo").files);
-        /var file_data = $("#uploadVideo").get(0).files[0]/
+        /event.preventDefault();/
         $.ajax({
           xhr : function(){
             var xhr = new window.XMLHttpRequest();
@@ -46,10 +44,11 @@
             return xhr;
           },
           type : 'POST',
-          url : '/clips/new',
-          data : formData,
+          url : '/clips',
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          data : new FormData($("#uploadVideo").files),
           processData : false,
-          contentType : false;
+          contentType : false,
           success : function(){
             alert('Video uploaded!');
           }
