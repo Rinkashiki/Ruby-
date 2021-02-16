@@ -4,7 +4,7 @@
 
   skip_before_action :authorized, only: [ :new, :create]
 
-  before_action :set_user, only: [ :edit, :update]
+  before_action :set_user, only: [ :edit, :update, :show, :destroy]
 
   def index
     @users = User.all
@@ -38,6 +38,9 @@
     end
   end
 
+  def show
+  end
+
   def edit
     @profiles = Profile.all
   end
@@ -52,6 +55,13 @@
 
     redirect_to users_path
   end
+
+  def destroy
+    @user.destroy
+    flash[ :alert] = 'Successfully deleted user'
+    redirect_to users_path
+  end
+
 
   private
 

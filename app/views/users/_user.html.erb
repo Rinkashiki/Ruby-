@@ -2,5 +2,8 @@
     <p>Nombre: <%= user.name %></p>
     <p>Apellidos: <%= user.surname %></p>
     <p>E-mail: <%= user.email %></p>
-    <p class="center"><%= link_to 'Edit', edit_user_path(user), class: 'btn btn-primary' %></p>
+    <div class="center">
+      <%= link_to 'Editar', edit_user_path(user), class: 'btn btn-primary' %>
+      <%= button_to 'Eliminar', user_path(user), method: :delete, class: 'btn btn-primary' %>
+    </div>
 </div>

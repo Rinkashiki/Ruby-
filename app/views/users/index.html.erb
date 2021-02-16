@@ -1,14 +1,13 @@
 <%= stylesheet_link_tag 'users' %>
+<div class="container">
 <div class="center">
   <% flash.each do |type, msg| %>
     <div class="alert alert-success alert-dismissible d-inline-block" role="alert">
-      <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
       <%= msg %>
     </div>
   <% end %>
   <% flash.delete(:alert) %>
 </div>
-<div class="container">
   <div class="row">
     <%= render @users %>
   </div>

@@ -1,5 +1,8 @@
 <div class="col-xs-1 col-md-3 elem rounded">
   <p class="center">Nombre: <%= clip.clipName %></p>
   <p class="center">Usuario: <%= clip.uploadUser %></p>
-  <p class="center"><%= link_to 'Video', clip, class: ' center btn btn-primary' %></p>
+  <div class="center">
+    <%= link_to 'Video', clip, class: 'btn btn-primary' %>
+    <%= button_to 'Eliminar', clip_path(clip), method: :delete, class: 'btn btn-primary' %>
+  </div>
 </div>

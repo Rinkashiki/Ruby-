@@ -3,6 +3,8 @@ class ClipsController < ApplicationController
   layout 'in_session', only: [ :index, :show, :new]
 
   before_action :authorized 
+
+  before_action :set_clip, only: [ :show, :destroy]
   
   def index
     @clips = Clip.all
@@ -28,13 +30,22 @@ class ClipsController < ApplicationController
   end 
 
   def show
-    @clip = Clip.find params[ :id]
+  end
+
+  def destroy
+    @clip.destroy
+    flash[ :alert] = 'Successfully deleted clip'
+    redirect_to clips_path
   end
 
   private 
 
   def clip_params
     params.require( :clip).permit( :video)
+  end
+
+  def set_clip
+    @clip = Clip.find params[ :id]
   end
 
 end

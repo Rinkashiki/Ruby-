@@ -14,10 +14,10 @@ Rails.application.routes.draw do
   #resources :images
 
   # Routes for users 
-  resources :users, only: [ :new, :create, :index, :edit, :update]
+  resources :users, only: [ :new, :create, :index, :edit, :update, :show, :destroy]
 
   # Routes for clips
-  resources :clips, only: [ :new, :create, :index, :show]
+  resources :clips, only: [ :new, :create, :index, :show, :destroy]
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
