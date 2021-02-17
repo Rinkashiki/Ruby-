@@ -1,0 +1,17 @@
+<%= stylesheet_link_tag 'users' %>
+<div class="container">
+<div class="center">
+  <% flash.each do |type, msg| %>
+    <div class="alert alert-success alert-dismissible d-inline-block" role="alert">
+      <%= msg %>
+    </div>
+  <% end %>
+  <% flash.delete(:alert) %>
+</div>
+  <div class="row">
+    <%= render @topics %>
+  </div>
+  <div class="center mb-5">
+    <%= link_to 'Nuevo topic', new_topic_path, class: 'btn btn-primary' %>
+  </div>
+</div>

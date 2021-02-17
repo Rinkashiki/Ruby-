@@ -4,6 +4,22 @@
   <div class="center handheld_display">
     <p>Nombre: <%= @clip.clipName %></p>
     <p>Usuario: <%= @clip.uploadUser %></p>
+    <% if !@decision.blank? %>
+      <p>
+        Decisión: <%= @decision.description + " " + @decision.initials %>
+        <%= link_to 'Cambiar', @clip, '/decision', class: 'btn btn-primary' %>
+      </p>
+    <% else %>
+      <p>Decisión: <%= link_to 'Cambiar', @clip, '/decision', class: 'btn btn-primary' %></p> 
+    <% end %>
+    <% if !@sanction.blank? %>
+      <p>
+        Sanción: <%= @sanction.description + " " + @sanction.initials %>
+        <%= link_to 'Cambiar', @clip, '/sanction', class: 'btn btn-primary' %>
+      </p>
+    <% else %>
+      <p>Sanción: <%= link_to 'Cambiar', @clip, '/sanction', class: 'btn btn-primary' %></p> 
+    <% end %>
     <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
   </div>
 </div>

@@ -31,7 +31,11 @@
     if @user.save
       UserMailer.with(user: @user).new_user_email.deliver_later
       flash[ :alert] = 'Succesfully registered!'
-      redirect_to '/welcome'
+      if logged_in?
+        redirect_to users_path
+      else
+        redirect_to '/welcome'
+      end
     else
       flash[ :alert] = @user.errors.first.full_message
       redirect_to new_user_path

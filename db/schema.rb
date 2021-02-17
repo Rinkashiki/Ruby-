@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_01_090138) do
+ActiveRecord::Schema.define(version: 2021_02_17_123043) do
 
   create_table "clips", charset: "utf8mb4", force: :cascade do |t|
     t.string "clipName"
@@ -18,6 +18,17 @@ ActiveRecord::Schema.define(version: 2021_02_01_090138) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "video"
+    t.bigint "decision_id"
+    t.bigint "sanction_id"
+    t.index ["decision_id"], name: "index_clips_on_decision_id"
+    t.index ["sanction_id"], name: "index_clips_on_sanction_id"
+  end
+
+  create_table "decisions", charset: "utf8mb4", force: :cascade do |t|
+    t.string "description"
+    t.string "initials"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "images", charset: "utf8mb4", force: :cascade do |t|
@@ -33,6 +44,19 @@ ActiveRecord::Schema.define(version: 2021_02_01_090138) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "sanctions", charset: "utf8mb4", force: :cascade do |t|
+    t.string "description"
+    t.string "initials"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "topics", charset: "utf8mb4", force: :cascade do |t|
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "surname"
@@ -44,5 +68,7 @@ ActiveRecord::Schema.define(version: 2021_02_01_090138) do
     t.index ["profile_id"], name: "index_users_on_profile_id"
   end
 
+  add_foreign_key "clips", "decisions"
+  add_foreign_key "clips", "sanctions"
   add_foreign_key "users", "profiles"
 end

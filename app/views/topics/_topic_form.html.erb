@@ -1,0 +1,32 @@
+<%= stylesheet_link_tag 'users' %>
+  <div class="container form_padding">
+    <br>
+    <div class="form-group">
+      <%= form_for @topic do |t| %>
+        <% flash.each do |type, msg| %>
+          <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
+            <%= msg %>
+          </div> 
+        <% end %>
+        <% flash.delete(:alert) %>
+        <% if !@topic[ :description].blank? %>
+          <h1>Edit topic</h1>
+        <% else %>
+          <h1>Create topic</h1>
+        <% end %>
+        <p>
+          <%= t.label :description %><br>
+          <%= t.text_field :description, class: "textBox" %>
+        </p>
+        <% if !@topic[ :description].blank? %>
+          <p>
+            <%= t.submit 'Editar', class: 'btn btn-primary' %>
+          </p>
+        <% else %>
+          <p>
+            <%= t.submit 'Crear', class: 'btn btn-primary' %>
+          </p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
