@@ -1,0 +1,21 @@
+<%= stylesheet_link_tag 'users' %>
+<div class="container form_padding">
+  <br>
+  <div class="form-group">
+    <div class="row">
+    <%= form_for @clip do %>
+      <h1>Edit Decision</h1>
+      <p class="custom-select">
+        <%= label_tag :decision %><br>
+        <%= select_tag :decision, options_for_select([ "No Falta", "Tiro Libre Indirecto", "Tiro Libre Directo", "Tiro Penal" ]) %>
+      </p>
+      <h1>Edit Sanction</h1>
+      <p class="custom-select">
+        <%= label_tag :sanction %><br>
+        <%= select_tag :sanction, options_for_select([ "No Tarjeta", "Tarjeta Amarilla", "Tarjeta Roja" ]) %>
+      </p>
+      <p><%= submit_tag 'Edit', class: 'btn btn-primary' %></p>
+    <% end %>
+    </div>
+  </div>
+</div>

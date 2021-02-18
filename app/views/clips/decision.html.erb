@@ -6,7 +6,12 @@
       <h1>Change Decision</h1>
       <p class="custom-select">
         <%= c.label :decision %><br>
-        <%= c.select :decision, @decisions.map{|d| [d.description]} %>
+        <select :decision>
+          <option value="NF">No Falta</option>
+          <option value="TLI">Tiro Libre Indirecto</option>
+          <option value="TLD">Tiro Libre Directo</option>
+          <option value="TP">Tiro Penal</option>
+        </select>
       </p>
       <p>
         <%= c.submit 'Cambiar', class: 'btn btn-primary' %>

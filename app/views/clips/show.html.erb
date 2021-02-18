@@ -2,24 +2,25 @@
 <div class="container">
   <br>
   <div class="center handheld_display">
+    <% flash.each do |type, msg| %>
+      <div class="alert alert-success alert-dismissible d-inline-block" role="alert">
+        <%= msg %>
+      </div> 
+    <% end %>
+    <% flash.delete(:alert) %>
     <p>Nombre: <%= @clip.clipName %></p>
     <p>Usuario: <%= @clip.uploadUser %></p>
     <% if !@decision.blank? %>
-      <p>
-        Decisión: <%= @decision.description + " " + @decision.initials %>
-        <%= link_to 'Cambiar', @clip, '/decision', class: 'btn btn-primary' %>
-      </p>
+      <p>Decisión: <span class="bg-light text-dark"><%= @decision.description + " " + @decision.initials %></span></p>
     <% else %>
-      <p>Decisión: <%= link_to 'Cambiar', @clip, '/decision', class: 'btn btn-primary' %></p> 
+      <p>Decisión: <span class="bg-light text-dark">Ninguna</span></p> 
     <% end %>
     <% if !@sanction.blank? %>
-      <p>
-        Sanción: <%= @sanction.description + " " + @sanction.initials %>
-        <%= link_to 'Cambiar', @clip, '/sanction', class: 'btn btn-primary' %>
-      </p>
+      <p>Sanción:  <span class="bg-light text-dark"><%= @sanction.description + " " + @sanction.initials %></span></p>
     <% else %>
-      <p>Sanción: <%= link_to 'Cambiar', @clip, '/sanction', class: 'btn btn-primary' %></p> 
+      <p>Sanción:  <span class="bg-light text-dark">Ninguna</span></p> 
     <% end %>
+    <p><%= link_to 'Edit', edit_clip_path(@clip), class: "btn btn-primary" %></p>
     <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
   </div>
 </div>

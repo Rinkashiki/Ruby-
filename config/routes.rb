@@ -17,15 +17,7 @@ Rails.application.routes.draw do
   resources :users, only: [ :new, :create, :index, :edit, :update, :show, :destroy]
 
   # Routes for clips
-  resources :clips, only: [ :new, :create, :index, :show, :destroy]
-
-  get 'decision', to: 'clips#decision'
-
-  post 'decision', to: 'clips#change_decision'
-
-  get 'sanction', to: 'clips#sanction'
-
-  post 'sanction', to: 'clips#change_sanction'
+  resources :clips, only: [ :new, :create, :index, :show, :edit, :update, :destroy]
 
   # Routes for topics
   resources :topics, only: [ :new, :create, :index, :edit, :update, :show, :destroy]

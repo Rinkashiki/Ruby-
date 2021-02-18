@@ -1,10 +1,10 @@
 class ClipsController < ApplicationController
 
-  layout 'in_session', only: [ :index, :show, :new, :decision, :sanction]
+  layout 'in_session', only: [ :index, :show, :new, :edit]
 
   before_action :authorized 
 
-  before_action :set_clip, only: [ :show, :destroy, :decision, :sanction]
+  before_action :set_clip, only: [ :show, :destroy, :edit, :update]
   
   def index
     @clips = Clip.all
@@ -38,31 +38,24 @@ class ClipsController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+    @decision = Decision.find_by_description(params[ :decision])
+    @sanction = Sanction.find_by_description(params[ :sanction])
+
+    @clip.update(decision_id: @decision[ :id], sanction_id: @sanction[ :id])
+
+    flash[ :alert] = 'Succesfully edited!'
+
+    redirect_to @clip
+  end
+
   def destroy
     @clip.destroy
     flash[ :alert] = 'Successfully deleted clip'
     redirect_to clips_path
-  end
-
-  def decision
-    @decisions = Decision.all
-  end
-
-  def change_decision
-    #@clip[ :decision_id] = Decision.find_by_description(params[ :clip][ :decision])
-    @clip.update(decision_id: Decision.find_by_description(params[ :clip][ :decision])[ :id])
-    flash[ :alert] = 'Successfully edited decision'
-    redirect_to clip_path
-  end
-
-  def sanction
-    @sanctions = Sanction.all
-  end
-
-  def change_sanction
-    @clip.update(sanction_id: Sanction.find_by_description(params[ :clip][ :sanction])[ :id])
-    flash[ :alert] = 'Successfully edited sanction'
-    redirect_to clip_path
   end
 
   private 
