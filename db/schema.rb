@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_17_123043) do
+ActiveRecord::Schema.define(version: 2021_02_19_104231) do
+
+  create_table "clip_topic", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "clips_id", null: false
+    t.bigint "topics_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["clips_id"], name: "index_clip_topic_on_clips_id"
+    t.index ["topics_id"], name: "index_clip_topic_on_topics_id"
+  end
 
   create_table "clips", charset: "utf8mb4", force: :cascade do |t|
     t.string "clipName"
@@ -68,6 +77,8 @@ ActiveRecord::Schema.define(version: 2021_02_17_123043) do
     t.index ["profile_id"], name: "index_users_on_profile_id"
   end
 
+  add_foreign_key "clip_topic", "clips", column: "clips_id"
+  add_foreign_key "clip_topic", "topics", column: "topics_id"
   add_foreign_key "clips", "decisions"
   add_foreign_key "clips", "sanctions"
   add_foreign_key "users", "profiles"

@@ -1,9 +1,11 @@
 class Clip < ApplicationRecord
 
-  mount_uploader :video, VideoUploader
+  mount_uploader :video, VideoUploader, presence: true
 
-  has_one :decision
+  belongs_to :decision, optional: true
 
-  has_one :sanction
+  belongs_to :sanction, optional: true
+
+  has_and_belongs_to_many :topics
    
 end

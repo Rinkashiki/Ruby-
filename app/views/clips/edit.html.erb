@@ -3,18 +3,18 @@
   <br>
   <div class="form-group">
     <div class="row">
-    <%= form_for @clip do %>
+    <%= form_for @clip do |c| %>
       <h1>Edit Decision</h1>
       <p class="custom-select">
-        <%= label_tag :decision %><br>
-        <%= select_tag :decision, options_for_select([ "No Falta", "Tiro Libre Indirecto", "Tiro Libre Directo", "Tiro Penal" ]) %>
+        <%= c.label :decision %><br>
+        <%= c.select :decision, @decisions.map{|d| [d.description]} %>
       </p>
       <h1>Edit Sanction</h1>
       <p class="custom-select">
-        <%= label_tag :sanction %><br>
-        <%= select_tag :sanction, options_for_select([ "No Tarjeta", "Tarjeta Amarilla", "Tarjeta Roja" ]) %>
+        <%= c.label :sanction %><br>
+        <%= c.select :sanction, @sanctions.map{|s| [s.description]} %>
       </p>
-      <p><%= submit_tag 'Edit', class: 'btn btn-primary' %></p>
+      <p><%= c.submit 'Edit', class: 'btn btn-primary' %></p>
     <% end %>
     </div>
   </div>

@@ -22,5 +22,10 @@
     <% end %>
     <p><%= link_to 'Edit', edit_clip_path(@clip), class: "btn btn-primary" %></p>
     <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
+    <div>
+      <% @topics.each do |t| %>
+        <p class="center elem rounded"><%= t['description'] %></p>
+      <% end %> 
+    </div>
   </div>
 </div>

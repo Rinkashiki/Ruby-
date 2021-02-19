@@ -24,7 +24,7 @@ class ClipsController < ApplicationController
       flash[ :alert] = 'Successfully uploaded video'
       redirect_to new_clip_path
     else
-      flash[ :alert] = c.errors.first.full_message
+      flash[ :alert] = @clip.errors.first.full_message
       redirect_to new_clip_path
     end
   end 
@@ -36,14 +36,22 @@ class ClipsController < ApplicationController
     if !@clip[ :sanction_id].nil?
       @sanction = Sanction.find(@clip[ :sanction_id])
     end
+    
+    query = "SELECT topics.description FROM topics JOIN clip_topic ON clip_topic.topics_id = topics.id WHERE clip_topic.clips_id = '#{@clip.id}'"
+
+    @topics = ActiveRecord::Base.connection.exec_query(query)
+    
+    #@topics = Topic.all
   end
 
   def edit
+    @decisions = Decision.all
+    @sanctions = Sanction.all
   end
 
   def update
-    @decision = Decision.find_by_description(params[ :decision])
-    @sanction = Sanction.find_by_description(params[ :sanction])
+    @decision = Decision.find_by_description(params[ :clip][ :decision])
+    @sanction = Sanction.find_by_description(params[ :clip][ :sanction])
 
     @clip.update(decision_id: @decision[ :id], sanction_id: @sanction[ :id])
 
