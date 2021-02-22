@@ -1,0 +1,14 @@
+<%= stylesheet_link_tag 'users' %>
+<div class="container form_padding">
+  <br>
+  <div class="form-group">
+    <%= form_tag '/add_topic' do %>
+      <h1>Add Topic</h1>
+      <p class="custom-select">
+        <%= label_tag :topic %><br>
+        <%= select_tag :topic, @topics.map{|t| [t.description]} %>
+      </p>
+      <p><%= submit_tag 'Añadir', class: 'btn btn-primary' %></p>
+    <% end %>
+  </div>
+</div>

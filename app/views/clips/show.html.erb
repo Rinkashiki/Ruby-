@@ -24,8 +24,12 @@
     <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
     <div>
       <% @topics.each do |t| %>
-        <p class="center elem rounded"><%= t['description'] %></p>
+        <div class="center elem rounded">
+          <%= t['description'] %> 
+          <%= link_to '-', {controller: 'clips', action: 'quit_topic', query: params[:topic => t['id']]}, method: 'post', class: 'btn btn-primary' %>
+        </div>
       <% end %> 
+      <%= link_to '+', {controller: 'clips', action: 'add_topic', query: params[:id]}, method: 'get', class: 'btn btn-primary mb-5' %>
     </div>
   </div>
 </div>
