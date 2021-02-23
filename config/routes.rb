@@ -19,11 +19,11 @@ Rails.application.routes.draw do
   # Routes for clips
   resources :clips, only: [ :new, :create, :index, :show, :edit, :update, :destroy]
 
-  get 'clips/:id/add_topic', to: 'clips#add_topic'
+  get 'clips/:id/add_topic', to: 'clips#add_topic', as: 'add_topic'
 
-  post 'clips/:id/add_topic', to: 'clips#add_topic_post'
+  get 'clips/:id/add_topic_post', to: 'clips#add_topic_post', as: 'add_topic_post'
 
-  get 'clips/:id/quit_topic', to: 'clips#quit_topic'
+  get 'clips/:id/quit_topic', to: 'clips#quit_topic', as: 'quit_topic'
 
  # post 'clips/:id/quit_topic', to: 'clips#quit_topic'
 

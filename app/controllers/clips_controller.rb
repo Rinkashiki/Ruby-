@@ -4,7 +4,7 @@ class ClipsController < ApplicationController
 
   before_action :authorized 
 
-  before_action :set_clip, only: [ :show, :destroy, :edit, :update, :add_topic, :add_topic_post]
+  before_action :set_clip, only: [ :show, :destroy, :edit, :update, :add_topic, :add_topic_post, :quit_topic]
   
   def index
     @clips = Clip.all
@@ -67,22 +67,29 @@ class ClipsController < ApplicationController
   end
 
   def add_topic
-    @topics = Topic.all
+    query = query = "SELECT topics.id, topics.description FROM topics JOIN clip_topic 
+    ON clip_topic.topics_id = topics.id WHERE clip_topic.clips_id != '#{@clip.id}'"
+
+    @topics = ActiveRecord::Base.connection.exec_query(query)
   end
 
   def add_topic_post
+    @topic = Topic.find params[ :topic]
 
     query = "INSERT into clip_topic (clips_id, topics_id, created_at, updated_at) 
-    values ('#{@clip.id}', '#{params[ :topic].id}', now(), now())"
+    values ('#{@clip.id}', '#{@topic.id}', now(), now())"
 
     ActiveRecord::Base.connection.exec_query(query)
+
+    flash[ :alert] = 'Successfully added topic'
+    redirect_to clip_path
 
   end
 
   def quit_topic
     @topic = Topic.find params[ :topic]
 
-    query = "DELETE from clip_topic where clips_id = '#{@clip.id}', topics_id = '#{@topic.id}'"
+    query = "DELETE from clip_topic WHERE clips_id = '#{@clip.id}' AND topics_id = '#{@topic.id}'"
     ActiveRecord::Base.connection.exec_query(query)
     
     flash[ :alert] = 'Successfully quit topic'

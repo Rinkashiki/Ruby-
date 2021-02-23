@@ -2,13 +2,15 @@
 <div class="container form_padding">
   <br>
   <div class="form-group">
-    <%= form_tag '/add_topic' do %>
       <h1>Add Topic</h1>
       <p class="custom-select">
-        <%= label_tag :topic %><br>
-        <%= select_tag :topic, @topics.map{|t| [t.description]} %>
+        <p>Topics</p><br>
+        <% @topics.each do |t| %>
+          <div class="m-4 p-3 bg-secondary text-white">
+            <%= t['description'] %>
+            <%= link_to 'Añadir', add_topic_post_path(:topic => t['id']), class: 'btn btn-primary' %>
+          </div>   
+        <% end %>
       </p>
-      <p><%= submit_tag 'Añadir', class: 'btn btn-primary' %></p>
-    <% end %>
   </div>
 </div>

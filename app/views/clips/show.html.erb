@@ -25,11 +25,11 @@
     <div>
       <% @topics.each do |t| %>
         <div class="center elem rounded">
-          <%= t['description'] %> 
-          <%= link_to '-', {controller: 'clips', action: 'quit_topic', query: params[:topic => t['id']]}, method: 'post', class: 'btn btn-primary' %>
+          <%= t['description'] %> <!--:topic => t['id']-->
+          <%= link_to '-', quit_topic_path(:topic => t['id']), class: 'btn btn-primary' %>
         </div>
       <% end %> 
-      <%= link_to '+', {controller: 'clips', action: 'add_topic', query: params[:id]}, method: 'get', class: 'btn btn-primary mb-5' %>
+      <%= link_to '+', add_topic_path(), class: 'btn btn-primary mb-5' %>
     </div>
   </div>
 </div>
