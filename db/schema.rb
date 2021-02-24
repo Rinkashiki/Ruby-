@@ -12,15 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2021_02_19_104231) do
 
-  create_table "clip_topic", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "clips_id", null: false
-    t.bigint "topics_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["clips_id"], name: "index_clip_topic_on_clips_id"
-    t.index ["topics_id"], name: "index_clip_topic_on_topics_id"
-  end
-
   create_table "clips", charset: "utf8mb4", force: :cascade do |t|
     t.string "clipName"
     t.string "uploadUser"
@@ -31,6 +22,15 @@ ActiveRecord::Schema.define(version: 2021_02_19_104231) do
     t.bigint "sanction_id"
     t.index ["decision_id"], name: "index_clips_on_decision_id"
     t.index ["sanction_id"], name: "index_clips_on_sanction_id"
+  end
+
+  create_table "clips_topics", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "clip_id", null: false
+    t.bigint "topic_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["clip_id"], name: "index_clips_topics_on_clip_id"
+    t.index ["topic_id"], name: "index_clips_topics_on_topic_id"
   end
 
   create_table "decisions", charset: "utf8mb4", force: :cascade do |t|
@@ -77,9 +77,9 @@ ActiveRecord::Schema.define(version: 2021_02_19_104231) do
     t.index ["profile_id"], name: "index_users_on_profile_id"
   end
 
-  add_foreign_key "clip_topic", "clips", column: "clips_id"
-  add_foreign_key "clip_topic", "topics", column: "topics_id"
   add_foreign_key "clips", "decisions"
   add_foreign_key "clips", "sanctions"
+  add_foreign_key "clips_topics", "clips"
+  add_foreign_key "clips_topics", "topics"
   add_foreign_key "users", "profiles"
 end
