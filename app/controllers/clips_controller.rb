@@ -40,8 +40,6 @@ class ClipsController < ApplicationController
     query = "SELECT t.id, t.description FROM topics t JOIN clips_topics ct ON ct.topic_id = t.id WHERE ct.clip_id = '#{@clip.id}'"
 
     @topics = ActiveRecord::Base.connection.exec_query(query)
-    
-    #@topics = Topic.all
   end
 
   def edit
@@ -61,7 +59,9 @@ class ClipsController < ApplicationController
   end
 
   def destroy
+    folder_id = @clip[ :id]
     @clip.destroy
+    FileUtils.remove_dir "#{Rails.public_path}/uploads/clip/video/#{folder_id}", true
     flash[ :alert] = 'Successfully deleted clip'
     redirect_to clips_path
   end
@@ -70,7 +70,6 @@ class ClipsController < ApplicationController
     query = "SELECT topics.id, topics.description from topics except 
     SELECT t.id, t.description from topics t join clips_topics ct on t.id = ct.topic_id where ct.clip_id = '#{@clip.id}'"
 
-    #query = "SELECT t.id, t.description FROM topics t"
     @topics = ActiveRecord::Base.connection.exec_query(query)
   end
 

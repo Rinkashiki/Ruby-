@@ -24,7 +24,7 @@
     <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
     <div>
       <% @topics.each do |t| %>
-        <div class="center elem rounded">
+        <div class="center topic rounded">
           <%= t['description'] %> <!--:topic => t['id']-->
           <%= link_to '-', quit_topic_path(:topic => t['id']), class: 'btn btn-primary' %>
         </div>

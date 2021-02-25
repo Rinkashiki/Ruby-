@@ -41,6 +41,10 @@ margin-top: 100px;
     display: inline;
 }
 
+.topic-button {
+    margin-left: 20vw;
+}
+
 /*
     ADDITIONAL STYLE, NOT IMPORTANT TO MAKE THINGS WORK BUT TO MAKE IT A BIT NICER :)
 */
@@ -193,6 +197,24 @@ a, a:hover, a:focus {
         width: 240px;
         height: 135px;
     }
+
+    .topic {
+        background: #6c757d;
+        color: white;
+        width: 70vw;
+        padding: 1vh;
+        margin: 4vw;
+    }
+
+    .topic-form {
+        background: #6c757d;
+        color: white;
+        width: 60vw;
+        padding: 1vh;
+        margin: 4vw;
+        margin-left: -4vw;
+    }
+
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -316,6 +338,24 @@ a, a:hover, a:focus {
         height: 378px;
     }
 
+    .topic {
+        background: #6c757d;
+        color: white;
+        width: 80vw;
+        padding: 1vh;
+        margin: 4vw;
+        margin-left: 10vw;
+    }
+
+    .topic-form {
+        background: #6c757d;
+        color: white;
+        width: 70vw;
+        padding: 1vh;
+        padding-left: 5vw;
+        margin: 4vw;
+        margin-left: 0vw;
+    }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -440,6 +480,24 @@ a, a:hover, a:focus {
         height: 450px;
     }
 
+    .topic {
+        background: #6c757d;
+        color: white;
+        width: 80vw;
+        padding: 1vh;
+        margin: 3vw;
+        margin-left: 5vw;
+    }
+
+    .topic-form {
+        background: #6c757d;
+        color: white;
+        width: 70vw;
+        padding: 1vh;
+        padding-left: 5vw;
+        margin: 3vw;
+        margin-left: 0vw;
+    }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -551,6 +609,24 @@ a, a:hover, a:focus {
     .video {
         width: 800px;
         height: 450px;
+    }
+
+    .topic {
+        background: #6c757d;
+        color: white;
+        width: 75vw;
+        padding: 1vh;
+        margin: 2vw;
+        margin-left: 4vw;
+    }
+
+    .topic-form {
+        background: #6c757d;
+        color: white;
+        width: 65vw;
+        padding: 1vh;
+        margin: 2vw;
+        margin-left: 0vw;
     }
 }
 
