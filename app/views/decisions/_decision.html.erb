@@ -1,4 +1,26 @@
-<div class="center col-xs-1 col-md-3 elem rounded">
-    <p><%= decision.description %></p>
-    <p><%= decision.initials %></p>
+<div class="center row elem rounded">
+    <h1><%= decision.description %></h1>
+    <h2><%= decision.initials %></h2>
+    <% if decision.description == "No Falta" %>
+    <p><%= "Aplicable cuando no se aprecia ningún tipo de acción no reglamentaria." %></p>
+    <img src="https://i2-prod.football.london/incoming/article18441648.ece/ALTERNATES/s615/2_GettyImages-1250318716.jpg" class="center">
+    <% end %>
+    <% if decision.description == "Tiro Libre Indirecto" %>
+    <p><%= "Aplicable si sucede alguna de estas acciones: jugar de manera peligrosa, 
+    no dejar que el guardameta suelte el esférico de sus manos, obstaculizar el avance de un adversario, o 
+    cometer alguna otra infracción que amerite parar el juego para advertir o sancionar a un jugador." %></p>
+    <img src="https://lh3.googleusercontent.com/proxy/WLt56QIbx2AMWSZee5bYpN2Pcvf9H8v_-UoRblVE8pb2F7z4uZDHF9N_6Lb4K7tSqE-YTDiC5dFOH9VORwqj6OUTbcZJYCOMezJZhCWc3vRf25gVQISbUlo8FIvT9hAfykAVD8cUDIIXW4b5" class="center">
+    <% end %>
+    <% if decision.description == "Tiro Libre Directo" %>
+    <p><%= "Aplicable cuando se identifique acción como temeraria, imprudente o 
+    que en ella se haya utilizado una fuerza exagerada, o cuando un jugador cometa alguna de las siguientes 
+    infracciones: saltar o cargar sobre un rival, empujarlo, realizarle una entrada, golpearle o intentar 
+    golpearle, ponerle o intentar ponerle una zancadilla, o darle o intentar darle una patada." %></p>
+    <img src="https://as.com/videos/imagenes/2017/01/05/portada/1483651739_278142_1483653382_noticia_normal.jpg" class="center">
+    <% end %>
+    <% if decision.description == "Tiro Penal" %>
+    <p><%= "Aplicable cuando se cometa alguna de las acciones por las que se sancionaría un tiro directo, 
+    pero teniendo en cuenta la acción se ha producido dentro del área." %></p>
+    <img src="http://www.e6d.es/fotos/17201414104576051y.jpg" class="center">
+    <% end %>
 </div>

@@ -14,12 +14,9 @@ class ClipsController < ApplicationController
     @clip = Clip.new
   end
 
-  def create  
-    if params[ :clip][ :video].present?
-      flash[ :alert] = 'Video not attached'
-      redirect_to new_clip_path
-    end
+  def create      
     @clip = Clip.new clip_params
+  
     @clip[ :clipName] = File.basename(params[ :clip][ :video].original_filename, '.mp4').truncate(20)
     @clip[ :uploadUser] = helpers.current_user[ :name]
 

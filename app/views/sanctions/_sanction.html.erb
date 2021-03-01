@@ -1,4 +1,16 @@
-<div class="center col-xs-1 col-md-3 elem rounded">
-    <p><%= sanction.description %></p>
-    <p><%= sanction.initials %></p>
+<div class="center row elem rounded">
+    <h1><%= sanction.description %></h1>
+    <h2><%= sanction.initials %></h2>
+    <% if sanction.description == "No Tarjeta" %>
+    <p><%= "Aplicable cuando la falta cometida es leve." %></p>
+    <img src="http://www.quevivaeldeporte.com/wp-content/uploads/2011/02/sueldos-arbitros-primera-division-1024x576.jpg" class="center">
+    <% end %>
+    <% if sanction.description == "Tarjeta Amarilla" %>
+    <p><%= "Aplicable cuando la falta cometida es grave o cuando se ha cometido un número reiterado de faltas leves." %></p>
+    <img src="https://cr00.epimg.net/radio/imagenes/2020/04/23/deportes/1587596725_314183_1587598011_noticia_normal.jpg" class="center">
+    <% end %>
+    <% if sanction.description == "Tarjeta Roja" %>
+    <p><%= "Aplicable cuando la falta cometida es my grave o por acumulación de dos tarjetas amarillas." %></p>
+    <img src="https://elpais.com/deportes/imagenes/2018/01/15/actualidad/1515971527_970790_1515971840_noticia_grande.jpg" class="center">
+    <% end %>
 </div>
