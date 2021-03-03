@@ -41,6 +41,10 @@ class ClipsController < ApplicationController
     query = "SELECT t.id, t.description FROM topics t JOIN clips_topics ct ON ct.topic_id = t.id WHERE ct.clip_id = '#{@clip.id}'"
 
     @topics = ActiveRecord::Base.connection.exec_query(query)
+
+    @question = Question.find_by_clip_id(@clip[ :id])
+
+    @answers = Answer.where(clip_id: @clip[ :id])
   end
 
   def edit
@@ -105,6 +109,11 @@ class ClipsController < ApplicationController
 
   def set_clip
     @clip = Clip.find params[ :id]
+  end
+
+  rescue_from ActionController::ParameterMissing do |e|
+    flash[ :alert] = 'Video not attached'
+    redirect_to new_clip_path
   end
 
 end

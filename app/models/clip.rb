@@ -7,5 +7,9 @@ class Clip < ApplicationRecord
   belongs_to :sanction, optional: true
 
   has_and_belongs_to_many :topics
+
+  has_one :question
+
+  has_many :answers
    
 end

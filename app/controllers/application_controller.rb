@@ -16,9 +16,4 @@ class ApplicationController < ActionController::Base
     redirect_to '/welcome' unless logged_in?
   end
 
-  rescue_from ActionController::ParameterMissing do |e|
-    flash[ :alert] = 'Video not attached'
-    redirect_to new_clip_path
-  end
-
 end

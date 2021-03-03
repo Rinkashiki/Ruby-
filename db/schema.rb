@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_19_104231) do
+ActiveRecord::Schema.define(version: 2021_03_03_090714) do
+
+  create_table "answers", charset: "utf8mb4", force: :cascade do |t|
+    t.string "description"
+    t.string "option"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "clip_id", null: false
+    t.index ["clip_id"], name: "index_answers_on_clip_id"
+  end
 
   create_table "clips", charset: "utf8mb4", force: :cascade do |t|
     t.string "clipName"
@@ -53,6 +62,14 @@ ActiveRecord::Schema.define(version: 2021_02_19_104231) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "questions", charset: "utf8mb4", force: :cascade do |t|
+    t.string "question"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "clip_id", null: false
+    t.index ["clip_id"], name: "index_questions_on_clip_id"
+  end
+
   create_table "sanctions", charset: "utf8mb4", force: :cascade do |t|
     t.string "description"
     t.string "initials"
@@ -77,9 +94,11 @@ ActiveRecord::Schema.define(version: 2021_02_19_104231) do
     t.index ["profile_id"], name: "index_users_on_profile_id"
   end
 
+  add_foreign_key "answers", "clips"
   add_foreign_key "clips", "decisions"
   add_foreign_key "clips", "sanctions"
   add_foreign_key "clips_topics", "clips"
   add_foreign_key "clips_topics", "topics"
+  add_foreign_key "questions", "clips"
   add_foreign_key "users", "profiles"
 end
