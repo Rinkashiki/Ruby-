@@ -30,6 +30,15 @@
         });
       });
     </script>
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#toolCollapse').on('click', function () {
+          $('#toolSubmenu').toggleClass('show');
+          $('#sidebar').toggleClass('resize');
+        });
+      });
+    </script>
   </head>
 
   <body>
@@ -47,8 +56,12 @@
             </button>
           </div>
         </div>
-          <a href="/tools">Herramientas</a>
-          <a href="/activities">Actividades</a>
+          <a href="#toolSubmenu" id="toolCollapse" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Herramientas</a>
+          <ul class="list-unstyled collapse" id="toolSubmenu">
+            <li>
+              <a href="/activities">Actividades</a>
+            </li>
+          </ul>
           <a href="/evaluation">Evaluación</a>
           <a href="#adminSubmenu" id="adminCollapse" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Administración</a>
           <ul class="list-unstyled collapse" id="adminSubmenu">

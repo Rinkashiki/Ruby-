@@ -10,15 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_090714) do
+ActiveRecord::Schema.define(version: 2021_03_04_130958) do
+
+  create_table "activities", charset: "utf8mb4", force: :cascade do |t|
+    t.string "name"
+    t.string "responsible"
+    t.datetime "initial_date"
+    t.datetime "final_date"
+    t.datetime "result_date"
+    t.decimal "grade", precision: 10
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "activities_questions", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "activity_id", null: false
+    t.bigint "question_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_activities_questions_on_activity_id"
+    t.index ["question_id"], name: "index_activities_questions_on_question_id"
+  end
+
+  create_table "activities_users", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "activity_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["activity_id"], name: "index_activities_users_on_activity_id"
+    t.index ["user_id"], name: "index_activities_users_on_user_id"
+  end
 
   create_table "answers", charset: "utf8mb4", force: :cascade do |t|
     t.string "description"
     t.string "option"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "clip_id", null: false
-    t.index ["clip_id"], name: "index_answers_on_clip_id"
+    t.bigint "question_id", null: false
+    t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
   create_table "clips", charset: "utf8mb4", force: :cascade do |t|
@@ -66,7 +95,7 @@ ActiveRecord::Schema.define(version: 2021_03_03_090714) do
     t.string "question"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "clip_id", null: false
+    t.bigint "clip_id"
     t.index ["clip_id"], name: "index_questions_on_clip_id"
   end
 
@@ -94,7 +123,11 @@ ActiveRecord::Schema.define(version: 2021_03_03_090714) do
     t.index ["profile_id"], name: "index_users_on_profile_id"
   end
 
-  add_foreign_key "answers", "clips"
+  add_foreign_key "activities_questions", "activities"
+  add_foreign_key "activities_questions", "questions"
+  add_foreign_key "activities_users", "activities"
+  add_foreign_key "activities_users", "users"
+  add_foreign_key "answers", "questions"
   add_foreign_key "clips", "decisions"
   add_foreign_key "clips", "sanctions"
   add_foreign_key "clips_topics", "clips"

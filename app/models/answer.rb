@@ -1,5 +1,5 @@
 class Answer < ApplicationRecord
 
-    belongs_to :clip
+    belongs_to :question
     
 end

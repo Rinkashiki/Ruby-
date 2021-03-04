@@ -40,14 +40,16 @@
     <br>
     <div>
       <br>
-      <h3 class="text-white">Topics</h3>
-      <% @topics.each do |t| %>
-        <div class="center topic rounded">
-          <%= t['description'] %> <!--:topic => t['id']-->
-          <%= link_to '-', quit_topic_path(:topic => t['id']), class: 'btn btn-primary' %>
-        </div>
-      <% end %> 
-      <%= link_to '+', add_topic_path(), class: 'btn btn-primary mb-5' %>
+      <% if Topic.any? %>
+        <h3 class="text-white">Topics</h3>
+        <% @topics.each do |t| %>
+          <div class="center topic rounded">
+            <%= t['description'] %> <!--:topic => t['id']-->
+            <%= link_to '-', quit_topic_path(:topic => t['id']), class: 'btn btn-primary' %>
+          </div>
+        <% end %> 
+        <%= link_to '+', add_topic_path(), class: 'btn btn-primary mb-5' %>
+      <% end %>
     </div>
   </div>
 </div>

@@ -44,7 +44,9 @@ class ClipsController < ApplicationController
 
     @question = Question.find_by_clip_id(@clip[ :id])
 
-    @answers = Answer.where(clip_id: @clip[ :id])
+    if !@question.nil?
+      @answers = Answer.where(question_id: @question[ :id])
+    end
   end
 
   def edit

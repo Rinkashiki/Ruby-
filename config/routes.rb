@@ -36,5 +36,12 @@ Rails.application.routes.draw do
   # Routes for sanctions
   resources :sanctions, only: [ :index]
 
+  # Routes for activities
+  resources :activities, only: [ :index, :new, :create, :edit, :update, :show, :destroy]
+
+  get 'activities/:id/add_question', to: 'activities#add_question', as: 'add_question'
+
+  get 'activities/:id/add_question_post', to: 'activities#add_question_post', as: 'add_question_post'
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
