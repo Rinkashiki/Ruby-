@@ -1,0 +1,48 @@
+<%= stylesheet_link_tag 'users' %>   
+  <div class="container form_padding">
+    <br>
+    <div class="form-group">
+      <%= form_for @activity do |a| %>
+        <% flash.each do |type, msg| %>
+          <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
+            <%= msg %>
+          </div> 
+        <% end %>
+        <% flash.delete(:alert) %>
+        <h1>Añadir Pregunta</h1>
+        <select id="questionType">
+          <option value="1" selected>Trivia</option>
+          <option value="2">Video Trivia</option>
+          <option value="3">Video Test</option>
+          <option value="4">Pregunta abierta</option>
+        </select>
+        <div id="questionForm">
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      $(document).ready(function(){
+        $("#questionType").change(function () {
+          var e = document.getElementById("questionType");
+          var type = e.options[e.selectedIndex].value;
+          switch (type){
+            case 1:
+              $("#questionForm").html("<%= j render(partial: 'trivia_form') %>");
+              break;
+            case 2:
+              $("#questionForm").html("<%= j render(partial: 'video_trivia_form') %>");
+              break;
+            case 3:
+              $("#questionForm").html("<%= j render(partial: 'video_test_form') %>");
+              break;
+            case 4:
+              $("#questionForm").html("<%= j render(partial: 'open_question_form') %>");
+              break;
+            default:
+              break;
+          }  
+        });
+      });
+    </script>
