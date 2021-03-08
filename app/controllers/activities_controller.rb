@@ -6,6 +6,8 @@ class ActivitiesController < ApplicationController
 
     before_action :set_activity, only: [ :show, :edit, :update, :destroy, :add_question]
 
+    protect_from_forgery :except => [ :add_question, :add_answer ]
+
     def index
         @activities = Activity.where(responsible: helpers.current_user[ :name])
     end
@@ -60,9 +62,29 @@ class ActivitiesController < ApplicationController
     end
 
     def add_question
+
+      @answers = Array.new
+
+      @type = params[ :type]
+
+      #respond_to do |format|
+        #format.js {render layout: false, content_type: 'text/javascript'}
+        #format.html
+      #end
+
     end
 
     def add_question_post
+    end
+
+    def add_answer
+
+      @answer = Answer.new
+
+      respond_to do |format|
+        format.js #{render layout: false, content_type: 'text/javascript'}
+      end
+
     end
 
     private 

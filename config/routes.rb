@@ -43,5 +43,14 @@ Rails.application.routes.draw do
 
   get 'activities/:id/add_question_post', to: 'activities#add_question_post', as: 'add_question_post'
 
+  #get 'activities/:id/add_answer', to: 'activities#add_answer', as: 'add_answer'
+
+  # Routes for questions
+  resources :questions, only: [:index, :new, :create]
+
+  # Routes for answers
+  resources :answers, only: [:index, :new, :create]
+
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

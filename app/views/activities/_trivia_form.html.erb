@@ -1,4 +1,4 @@
-
+<%= stylesheet_link_tag 'users' %>
     <br>
     <div class="form-group">
       <%= form_tag '/add_question' do %>
@@ -8,9 +8,18 @@
           </div> 
         <% end %>
         <% flash.delete(:alert) %>
-        <h2>Trivia</h2>
-          <p>
-            <%= submit_tag 'Añadir Pregunta', class: 'btn btn-primary' %>
-          </p>
+        <h1>Trivia</h1>
+        <%= label_tag :question%><br>
+        <%= text_field_tag :question, class: 'textBox' %>
+        <div>
+          <h2>Respuestas</h2>
+            <% render @answers %>
+            <%= link_to 'Añadir Respuesta', new_answer_path(format: 'js'), remote: true, class: 'btn btn-primary' %>
+            <div id="answerForm">
+            </div>
+        </div>
+        <p>
+          <%= submit_tag 'Añadir Pregunta', class: 'btn btn-primary' %>
+        </p>
       <% end %>
     </div>

@@ -1,0 +1,25 @@
+<%= stylesheet_link_tag 'users' %>
+  <div class="container form_padding">
+    <br>
+    <div class="form-group">
+      <%= form_for @answer do |f| %>
+        <% flash.each do |type, msg| %>
+          <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
+            <%= msg %>
+          </div> 
+        <% end %>
+        <% flash.delete(:alert) %>
+        <p>
+          <%= f.label :description %><br>
+          <%= f.text_field :description, class: "textBox" %>
+        </p>
+        <p>
+          <%= f.label :option %><br>
+          <%= f.text_field :option, class: "textBox" %>
+        </p>
+        <p>
+          <%= f.submit 'Añadir', class: 'btn btn-primary' %>
+         </p>
+      <% end %>
+    </div>
+  </div>
