@@ -22,21 +22,22 @@
     <% end %>
     <p><%= link_to 'Edit', edit_clip_path(@clip), class: "btn btn-primary" %></p>
     <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
-    <% if !@question.nil? %>
       <div>
         <h3 class="text-white">Pregunta</h3>
+        <% if !@question.nil? %>
         <div class="center topic rounded">
           <%= @question.question %>
         </div>
-        <% if !@answers.nil? %>
-          <% @answers.each do |a| %>
-            <div class="center topic rounded bg-primary">
-              <%= a.description %>
-            </div>
+          <% if !@answers.nil? %>
+            <% @answers.each do |a| %>
+              <div class="center topic rounded bg-primary">
+                <%= a.description %>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
+        <p><%= link_to 'Añadir', new_question_path(clip: @clip), class: "btn btn-primary" %></p>
       </div>
-    <% end %>
     <br>
     <div>
       <br>

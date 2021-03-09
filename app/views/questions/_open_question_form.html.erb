@@ -1,16 +1,16 @@
 <%= stylesheet_link_tag 'users' %>
     <br>
     <div class="form-group">
-      <%= form_tag '/add_question' do %>
+      <%= form_for @question do |f| %>
         <% flash.each do |type, msg| %>
           <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
             <%= msg %>
           </div> 
         <% end %>
         <% flash.delete(:alert) %>
-        <h2>Pregunta abierta</h2>
-          <p>
-            <%= submit_tag 'Añadir Pregunta', class: 'btn btn-primary' %>
-          </p>
+        <h2>Pregunta abierta</h2><br>
+        <%= f.label :question, class: 'text-white' %><br>
+        <%= f.text_field :question, class: 'textBox' %><br>
+        <p class="mt-3"><%= f.submit 'Añadir Pregunta', class: 'btn btn-primary' %></p>
       <% end %>
     </div>

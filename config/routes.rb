@@ -25,8 +25,6 @@ Rails.application.routes.draw do
 
   get 'clips/:id/quit_topic', to: 'clips#quit_topic', as: 'quit_topic'
 
- # post 'clips/:id/quit_topic', to: 'clips#quit_topic'
-
   # Routes for topics
   resources :topics, only: [ :new, :create, :index, :edit, :update, :show, :destroy]
 
@@ -38,12 +36,6 @@ Rails.application.routes.draw do
 
   # Routes for activities
   resources :activities, only: [ :index, :new, :create, :edit, :update, :show, :destroy]
-
-  get 'activities/:id/add_question', to: 'activities#add_question', as: 'add_question'
-
-  get 'activities/:id/add_question_post', to: 'activities#add_question_post', as: 'add_question_post'
-
-  #get 'activities/:id/add_answer', to: 'activities#add_answer', as: 'add_answer'
 
   # Routes for questions
   resources :questions, only: [:index, :new, :create]

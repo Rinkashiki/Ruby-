@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_130958) do
+ActiveRecord::Schema.define(version: 2021_03_09_111422) do
 
   create_table "activities", charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
@@ -58,7 +58,9 @@ ActiveRecord::Schema.define(version: 2021_03_04_130958) do
     t.string "video"
     t.bigint "decision_id"
     t.bigint "sanction_id"
+    t.bigint "question_id"
     t.index ["decision_id"], name: "index_clips_on_decision_id"
+    t.index ["question_id"], name: "index_clips_on_question_id"
     t.index ["sanction_id"], name: "index_clips_on_sanction_id"
   end
 
@@ -129,6 +131,7 @@ ActiveRecord::Schema.define(version: 2021_03_04_130958) do
   add_foreign_key "activities_users", "users"
   add_foreign_key "answers", "questions"
   add_foreign_key "clips", "decisions"
+  add_foreign_key "clips", "questions"
   add_foreign_key "clips", "sanctions"
   add_foreign_key "clips_topics", "clips"
   add_foreign_key "clips_topics", "topics"

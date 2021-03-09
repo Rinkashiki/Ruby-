@@ -1,6 +1,6 @@
 class Question < ApplicationRecord
 
-    belongs_to :clip
+    has_one :clip
 
     has_many :answers
     
