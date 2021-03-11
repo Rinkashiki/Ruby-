@@ -20,6 +20,10 @@ class ActivitiesController < ApplicationController
 
         if !aux_activity.in?(activities)
           @activity = Activity.new activity_params
+          @activity[ :initial_date] = Time.now.strftime("%Y-%m-%d")
+          @activity[ :final_date] = Time.now.strftime("%Y-%m-%d")
+          @activity[ :result_date] = Time.now.strftime("%Y-%m-%d")
+          @activity[ :grade] = 5
           @activity[ :responsible] = helpers.current_user[ :name]
 
           if @activity.save
@@ -46,7 +50,7 @@ class ActivitiesController < ApplicationController
 
     def update
       @activity.update(initial_date: params[ :activity][ :initial_date], final_date: params[ :activity][ :final_date], 
-      result_date: params[ :activity][ :result_date])
+      result_date: params[ :activity][ :result_date], grade: params[ :activity][ :grade])
 
       flash[ :alert] = 'Succesfully edited!'
 
@@ -55,14 +59,14 @@ class ActivitiesController < ApplicationController
 
     def destroy
     @activity.destroy
-    flash[ :alert] = 'Successfully deleted clip'
+    flash[ :alert] = 'Successfully deleted activity'
     redirect_to activities_path
     end
 
     private 
 
     def activity_params
-        params.require( :activity).permit( :name, :initial_date, :final_date, :result_date, :grade)
+        params.require( :activity).permit( :name)
     end
 
     def set_activity

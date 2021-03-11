@@ -15,10 +15,9 @@
           <%= link_to 'Video Trivia', new_question_path(activity: @activity, type: 'Video Trivia'), class: 'btn btn-primary' %>
           <%= link_to 'Video Test', new_question_path(activity: @activity, type: 'Video Test'), class: 'btn btn-primary' %>
           <%= link_to 'Pregunta Abierta', new_question_path(activity: @activity, type: 'Pregunta Abierta'), class: 'btn btn-primary' %>
+          <%= link_to 'Pregunta Existente', new_question_path(activity: @activity, type: 'Pregunta Existente'), class: 'btn btn-primary' %>
         <% else %>
           <%= link_to 'Trivia', new_question_path(clip: @clip, type: 'Trivia'), class: 'btn btn-primary' %>
-          <%= link_to 'Video Trivia', new_question_path(clip: @clip, type: 'Video Trivia'), class: 'btn btn-primary' %>
-          <%= link_to 'Video Test', new_question_path(clip: @clip, type: 'Video Test'), class: 'btn btn-primary' %>
           <%= link_to 'Pregunta Abierta', new_question_path(clip: @clip, type: 'Pregunta Abierta'), class: 'btn btn-primary' %>
         <% end %>
         </div>
@@ -34,6 +33,9 @@
         <% end %>
         <% if @type == 'Pregunta Abierta' %>
           <%= render 'open_question_form' %>
+        <% end %>
+        <% if @type == 'Pregunta Existente' %>
+          <%= render @questions %>
         <% end %>
         </div>
     </div>

@@ -1,0 +1,19 @@
+<div class="col-xs-1 col-md-3 elem rounded">
+    <p>Pregunta: <%= question.question %></p>
+    <% if question[ :clip_id].nil? %>
+      <% if Answer.find_by_question_id(question[ :id]).nil? %>
+        <p>Tipo de pregunta: Pregunta Abierta</p>
+      <% else %>
+        <p>Tipo de pregunta: Trivia</p>
+      <% end %>
+    <% else %>
+      <% if Answer.find_by_question_id(question[ :id]).nil? %>
+        <p>Tipo de pregunta: Video Test</p>
+      <% else %>
+        <p>Tipo de pregunta: Video Trivia</p>
+      <% end %>
+    <% end %>
+    <div class="center">
+      <%= link_to 'Usar', questions_path(), class: 'btn btn-primary' %>
+    </div>
+</div>

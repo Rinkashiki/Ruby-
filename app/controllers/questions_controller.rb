@@ -5,10 +5,12 @@ class QuestionsController < ApplicationController
     before_action :authorized
 
     def index
-        @questions = Answer.all
+        @questions = Question.all
     end
 
     def new
+        @questions = Question.all
+
         @question = Question.new
 
         @clips = Clip.all

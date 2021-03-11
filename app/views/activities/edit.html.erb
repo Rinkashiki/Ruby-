@@ -12,15 +12,19 @@
         <h1>Editar Actividad</h1>
         <p>
           <%= a.label :initial_date %><br>
-          <%= a.date_field :initial_date, :value => Time.now.strftime("%Y-%m-%d"), class: "textBox" %>
+          <%= a.date_field :initial_date, class: "textBox" %>
         </p>
         <p>
           <%= a.label :final_date %><br>
-          <%= a.date_field :final_date, :value => Time.now.strftime("%Y-%m-%d"), class: "textBox" %>
+          <%= a.date_field :final_date, class: "textBox" %>
         </p>
         <p>
           <%= a.label :result_date %><br>
-          <%= a.date_field :result_date, :value => Time.now.strftime("%Y-%m-%d"), class: "textBox" %>
+          <%= a.date_field :result_date, class: "textBox" %>
+        </p>
+        <p>
+          <%= a.label :grade %><br>
+          <%= a.number_field :grade, class: "textBox" %>
         </p>
         <p>
           <%= a.submit 'Editar', class: 'btn btn-primary' %>
