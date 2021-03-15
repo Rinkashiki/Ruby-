@@ -15,8 +15,9 @@
         </p>
         <p>
           <%= f.label :option %><br>
-          <%= f.text_field :option, class: "textBox" %>
+          <%= f.select :option, options_for_select(["Verdadero", "Falso"]) %>
         </p>
+        <%= hidden_field_tag(:question, @question[ :id]) %>
         <p>
           <%= f.submit 'Añadir', class: 'btn btn-primary' %>
          </p>

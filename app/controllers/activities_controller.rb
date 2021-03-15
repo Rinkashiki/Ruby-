@@ -40,9 +40,10 @@ class ActivitiesController < ApplicationController
     end
 
     def show
-        query = "SELECT q.id, q.question FROM questions q JOIN activities_questions aq ON aq.question_id = q.id 
+        query = "SELECT q.id, q.question, q.question_type FROM questions q JOIN activities_questions aq ON aq.question_id = q.id 
         WHERE aq.activity_id = '#{@activity.id}'"
-        @questions = ActiveRecord::Base.connection.exec_query(query)
+        #@questions = ActiveRecord::Base.connection.exec_query(query)
+        @questions = Question.find_by_sql(query)
     end
 
     def edit

@@ -38,10 +38,10 @@ Rails.application.routes.draw do
   resources :activities, only: [ :index, :new, :create, :edit, :update, :show, :destroy]
 
   # Routes for questions
-  resources :questions, only: [:index, :new, :create]
+  resources :questions, only: [:index, :new, :create, :show]
 
   # Routes for answers
-  resources :answers, only: [:index, :new, :create]
+  resources :answers, only: [:index, :new, :create, :show, :destroy]
 
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
