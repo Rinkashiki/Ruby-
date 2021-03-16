@@ -27,6 +27,7 @@
         <% if !@question.nil? %>
         <div class="center topic rounded">
           <%= @question.question %>
+          
         </div>
           <% if !@answers.nil? %>
             <% @answers.each do |a| %>
@@ -34,9 +35,13 @@
                 <%= a.description %>
               </div>
             <% end %>
+            <% if @answers.length() < 4 %>
+              <p class='m-3'><%= link_to 'Añadir respuesta', new_answer_path(question: @question.id, clip: @clip.id), class: 'btn btn-primary' %></p>
+            <% end %>
           <% end %>
+        <% else %>
+          <p><%= link_to 'Añadir', new_question_path(clip: @clip), class: "btn btn-primary" %></p>
         <% end %>
-        <p><%= link_to 'Añadir', new_question_path(clip: @clip), class: "btn btn-primary" %></p>
       </div>
     <br>
     <div>

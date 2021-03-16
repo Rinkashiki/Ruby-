@@ -11,7 +11,12 @@
         <h1>Trivia</h1>
         <%= f.label :question, class: 'text-white' %><br>
         <%= f.text_field :question, class: 'textBox' %>
-        <%= hidden_field_tag(:activity, @activity) %>
+        <% if !@activity.nil? %>
+          <%= hidden_field_tag(:activity, @activity.id) %>
+        <% end %>  
+        <% if !@clip.nil? %>
+          <%= hidden_field_tag(:clip, @clip) %>
+        <% end %>
         <!--<div class="mt-3">
           <h2>Respuestas</h2>
           <% if !@answers.nil? %>

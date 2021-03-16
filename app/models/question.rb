@@ -1,5 +1,7 @@
 class Question < ApplicationRecord
 
+    validates :question, presence: true
+
     has_one :clip
 
     has_many :answers

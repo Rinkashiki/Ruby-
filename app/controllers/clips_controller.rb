@@ -42,7 +42,9 @@ class ClipsController < ApplicationController
 
     @topics = ActiveRecord::Base.connection.exec_query(query)
 
-    @question = Question.find_by_clip_id(@clip[ :id])
+    if !@clip[ :question_id].nil?
+      @question = Question.find @clip[ :question_id]
+    end
 
     if !@question.nil?
       @answers = Answer.where(question_id: @question[ :id])

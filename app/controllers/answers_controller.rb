@@ -15,7 +15,11 @@ class AnswersController < ApplicationController
     def new
         @answer = Answer.new
 
-        #@question = Question.find params[ :question]
+        @question = Question.find params[ :question]
+
+        if !params[ :clip].nil?
+          @clip = Clip.find params[ :clip]
+        end
 
         #respond_to do |format|
             #format.js { render layout: false }
@@ -27,14 +31,26 @@ class AnswersController < ApplicationController
 
         @answer[ :question_id] = params[ :question]
 
+        if !params[ :clip].nil?
+            @clip = Clip.find params[ :clip]
+        end
+
         #@question = Question.find(params[ :question])
 
         if @answer.save
             flash[ :alert] = "Succesfully created answer"
-            redirect_to @question
+            if !@clip.nil?
+              redirect_to @clip
+            else
+              redirect_to @question
+            end
         else
             flash[ :alert] = @answer.errors.first.full_message
-            redirect_to new_answer_path
+            if !@clip.nil?
+              redirect_to new_answer_path(question: params[ :question], clip: params[ :clip])
+            else
+              redirect_to new_answer_path(question: params[ :question])
+            end
         end
 
         #respond_to do |format|

@@ -13,6 +13,16 @@
       <p>Tipo de pregunta: <%= @question.question_type %></p>
     </div>
     <div>
+      <% if !@clip.nil?%>
+      <h2>Video</h2>
+        <% if @question.question_type == "Video Test" %>
+          <p>Decisión: <span class="bg-light text-dark"><%= @decision.description + " " + @decision.initials %></span></p>
+          <p>Sanción:  <span class="bg-light text-dark"><%= @sanction.description + " " + @sanction.initials %></span></p>
+        <% end %>
+        <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
+      <% end %>  
+    </div>
+    <div>
       <% if @question.question_type == "Trivia" ||  @question.question_type == "Video Trivia" %>
         <h2>Respuestas</h2>
         <% if !@answers.blank? %>
@@ -30,16 +40,6 @@
           <p class='m-3'><%= link_to 'Añadir respuesta', new_answer_path(question: @question), class: 'btn btn-primary' %></p>
         <% end %>
       <% end %>
-    </div>
-    <div>
-      <% if !@clip.nil?%>
-      <h2>Video</h2>
-        <% if @question.question_type == "Video Test" %>
-          <p>Decisión: <span class="bg-light text-dark"><%= @decision.description + " " + @decision.initials %></span></p>
-          <p>Sanción:  <span class="bg-light text-dark"><%= @sanction.description + " " + @sanction.initials %></span></p>
-        <% end %>
-        <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
-      <% end %>  
     </div>   
   </div>
 </div>

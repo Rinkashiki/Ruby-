@@ -10,25 +10,24 @@ class QuestionsController < ApplicationController
 
     def new
 
-        @activity = Activity.find params[ :activity]
+        if !params[ :activity].nil?
+          @activity = Activity.find params[ :activity]
 
-        query = "SELECT id, question, question_type from questions except 
-        SELECT q.id, q.question, q.question_type from questions q join activities_questions aq on 
-        q.id = aq.question_id where aq.activity_id = '#{@activity.id}'"
+          query = "SELECT id, question, question_type from questions except 
+          SELECT q.id, q.question, q.question_type from questions q join activities_questions aq on 
+          q.id = aq.question_id where aq.activity_id = '#{@activity.id}'"
+  
+          @questions = Question.find_by_sql(query)
 
-        @questions = Question.find_by_sql(query)
+          @clips = Clip.all
 
-        @question = Question.new
+          @evaluated_clips = Clip.where.not(decision_id: nil, sanction_id: nil)
 
-        @clips = Clip.all
+        end 
 
-        @evaluated_clips = Clip.where.not(decision_id: nil, sanction_id: nil)
+        @question = Question.new 
 
         @type = params[ :type]
-
-        if !params[ :activity].nil?
-          @activity = params[ :activity]
-        end
 
         if !params[ :clip].nil?
           @clip = params[ :clip]
@@ -42,7 +41,13 @@ class QuestionsController < ApplicationController
 
     def create
 
+      if !params[ :activity].nil?
         @activity = Activity.find params[ :activity]
+      end
+
+      if !params[ :clip].nil?
+        @clip = Clip.find params[ :clip]
+      end
 
         @question = Question.new question_params
 
@@ -51,18 +56,31 @@ class QuestionsController < ApplicationController
         else
           @question[ :question_type] = params[ :type]
         end
+
+        if @question[ :question_type] == "Video Trivia"
+          @question[ :clip_id] = params[ :clip]
+        end
         
         if @question.save
             flash[ :alert] = "Succesfully created question"
+            if !params[ :activity].nil?
+              query = "INSERT into activities_questions (activity_id, question_id, created_at, updated_at) 
+              values ('#{@activity.id}', '#{@question.id}', now(), now())"
+              ActiveRecord::Base.connection.exec_query(query)
 
-            query = "INSERT into activities_questions (activity_id, question_id, created_at, updated_at) 
-            values ('#{@activity.id}', '#{@question.id}', now(), now())"
-             ActiveRecord::Base.connection.exec_query(query)
+              redirect_to @activity
+            else
+              @clip.update(question_id: @question[ :id])
 
-            redirect_to @activity
+              redirect_to @clip
+            end
         else
             flash[ :alert] = @question.errors.first.full_message
-            redirect_to new_question_path
+            if !params[ :activity].nil?
+              redirect_to new_question_path(activity: params[ :activity], type: params[ :type])
+            else
+              redirect_to new_question_path(clip: params[ :clip], type: params[ :type])
+            end
         end
         
         #respond_to do |format|
