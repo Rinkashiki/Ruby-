@@ -25,7 +25,7 @@
                   <%= hidden_field_tag(:clip, c.id) %>
                   <%= f.submit 'Usar clip', class: 'btn btn-primary' %>
                   <% if !c[ :question_id].nil? %>
-                    <%= f.submit 'Usar clip y pregunta', class: 'btn btn-primary' %>
+                    <%= link_to 'Usar clip con pregunta', add_activity_question_path(id: c.question_id, activity: @activity), class: 'btn btn-primary' %>
                   <% end %>
                 </div>
               </div>

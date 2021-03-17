@@ -8,6 +8,7 @@
       </div> 
     <% end %>
     <% flash.delete(:alert) %>
+    <h1>Pregunta</h1>
     <div class="elem rounded">
       <p>Pregunta: <%= @question.question %></p>
       <p>Tipo de pregunta: <%= @question.question_type %></p>
@@ -31,7 +32,7 @@
               <p display="in-line">
                 Respuesta: <%= a.description %> 
                 Opción:  <%= a.option %>  
-                <%= button_to '-', answer_path(question: @question[ :id]), method: :delete, class: 'btn btn-primary' %>
+                <%= button_to '-', answer_path(a, question: @question[ :id]), method: :delete, class: 'btn btn-primary' %>
               </p>
             </div>
           <% end %>

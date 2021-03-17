@@ -62,10 +62,21 @@ class AnswersController < ApplicationController
     end
 
     def destroy
+
+        if !params[ :clip].nil?
+            @clip = Clip.find params[ :clip]
+        end
+
         @answer = Answer.find params[ :id]
         @answer.destroy
         flash[ :alert] = 'Successfully deleted answer'
-        redirect_to @question
+
+        if !@clip.nil?
+          redirect_to @clip
+        else
+          redirect_to @question
+        end
+
     end
 
     private

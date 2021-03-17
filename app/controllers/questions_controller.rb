@@ -4,6 +4,8 @@ class QuestionsController < ApplicationController
 
     before_action :authorized
 
+    before_action :set_question, only: [ :show, :add_activity_question]
+
     def index
         @questions = Question.all
     end
@@ -23,7 +25,9 @@ class QuestionsController < ApplicationController
 
           @evaluated_clips = Clip.where.not(decision_id: nil, sanction_id: nil)
 
-        end 
+        else 
+          @questions = Question.where(question_type: "Trivia")
+        end
 
         @question = Question.new 
 
@@ -41,15 +45,21 @@ class QuestionsController < ApplicationController
 
     def create
 
+      # Access from activity
       if !params[ :activity].nil?
         @activity = Activity.find params[ :activity]
       end
 
+      # Access from clip
       if !params[ :clip].nil?
         @clip = Clip.find params[ :clip]
       end
 
+      if params[ :type] == "Video Test"
+        @question = Question.new(question: "Video Test")
+      else
         @question = Question.new question_params
+      end
 
         if params[ :type].nil?
           @question[ :question_type] = "Trivia"
@@ -57,8 +67,12 @@ class QuestionsController < ApplicationController
           @question[ :question_type] = params[ :type]
         end
 
-        if @question[ :question_type] == "Video Trivia"
+        if !@clip.nil?
           @question[ :clip_id] = params[ :clip]
+
+          if @question[ :question_type] != "Video Test"
+            @question[ :question_type] = "Video Trivia" 
+          end
         end
         
         if @question.save
@@ -91,7 +105,7 @@ class QuestionsController < ApplicationController
     end
 
     def show
-        @question = Question.find params[ :id]
+        #@question = Question.find params[ :id]
 
         @answers = Answer.where(question_id: @question[ :id])
 
@@ -107,9 +121,27 @@ class QuestionsController < ApplicationController
         end
     end
 
+    def add_activity_question
+
+      @activity = Activity.find params[ :activity]
+
+      query = "INSERT into activities_questions (activity_id, question_id, created_at, updated_at) 
+      values ('#{@activity.id}', '#{@question.id}', now(), now())"
+
+      ActiveRecord::Base.connection.exec_query(query)
+
+      flash[ :alert] = 'Successfully added question'
+      redirect_to @activity
+
+    end
+
     private
 
     def question_params
         params.require( :question).permit( :question)
+    end
+
+    def set_question
+      @question = Question.find params[ :id]
     end
 end

@@ -17,13 +17,17 @@
                 <p class="center"><%= c.clipName %></p>
                 <p class="center"> <span class="bg-light text-dark"><%= Decision.find(c.decision_id).description %></span></p>
                 <p class="center"> <span class="bg-light text-dark"><%= Sanction.find(c.sanction_id).description %></span></p>
+                <% if !@activity.nil? %>
+                  <%= hidden_field_tag(:activity, @activity.id) %>
+                <% end %>
+                <%= hidden_field_tag(:type, @type) %>
+                <%= hidden_field_tag(:clip, c.id) %>
                 <div class="center">
-                  <%= link_to 'Usar clip', c, class: 'btn btn-primary' %>
+                  <%= f.submit 'Usar clip', class: 'btn btn-primary' %>
                 </div>
               </div>
             <% end %>
           <% end %>
-        <p class="mt-4"><%= f.submit 'Añadir Pregunta', class: 'btn btn-primary' %></p>
       <% end %>
     </div>
     

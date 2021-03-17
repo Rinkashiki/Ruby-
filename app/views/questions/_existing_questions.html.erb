@@ -1,0 +1,24 @@
+<%= stylesheet_link_tag 'users' %>
+    <br>
+    <div class="form-group">
+        <% flash.each do |type, msg| %>
+          <div class="alert alert-danger alert-dismissible d-inline-block" role="alert">
+            <%= msg %>
+          </div> 
+        <% end %>
+        <% flash.delete(:alert) %>
+        <h2>Preguntas Existentes</h2><br>
+        <% if !@activity.nil? %>
+          <%= hidden_field_tag(:activity, @activity.id) %>
+        <% end %>
+        <%= hidden_field_tag(:type, @type) %>
+        <% @questions.each do |q| %>
+            <div class="center topic rounded">
+              <p>
+                Pregunta: <%= q.question %> 
+                Tipo de pregunta: <%= q.question_type %>
+                <%= link_to 'Añadir Pregunta', add_activity_question_path(q, activity: @activity), class: 'btn btn-primary' %>
+              </p>
+            </div>
+          <% end %>
+    </div>

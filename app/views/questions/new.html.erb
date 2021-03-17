@@ -19,6 +19,7 @@
         <% else %>
           <%= link_to 'Trivia', new_question_path(clip: @clip, type: 'Trivia'), class: 'btn btn-primary' %>
           <%= link_to 'Pregunta Abierta', new_question_path(clip: @clip, type: 'Pregunta Abierta'), class: 'btn btn-primary' %>
+          <%= link_to 'Pregunta Existente', new_question_path(activity: @activity, type: 'Pregunta Existente'), class: 'btn btn-primary' %>
         <% end %>
         </div>
         <div id="questionForm">
@@ -35,7 +36,7 @@
           <%= render 'open_question_form' %>
         <% end %>
         <% if @type == 'Pregunta Existente' %>
-          <%= render @questions %>
+          <%= render 'existing_questions' %>
         <% end %>
         </div>
     </div>

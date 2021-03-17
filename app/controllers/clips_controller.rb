@@ -4,7 +4,7 @@ class ClipsController < ApplicationController
 
   before_action :authorized 
 
-  before_action :set_clip, only: [ :show, :destroy, :edit, :update, :add_topic, :add_topic_post, :quit_topic]
+  before_action :set_clip, only: [ :show, :destroy, :edit, :update, :add_topic, :add_topic_post, :quit_topic, :quit_question]
   
   def index
     @clips = Clip.all
@@ -102,6 +102,15 @@ class ClipsController < ApplicationController
     ActiveRecord::Base.connection.exec_query(query)
     
     flash[ :alert] = 'Successfully quit topic'
+    redirect_to clip_path
+  end
+
+  def quit_question
+
+    @clip.update(question_id: nil)
+    
+    flash[ :alert] = 'Successfully quit question'
+    
     redirect_to clip_path
   end
 

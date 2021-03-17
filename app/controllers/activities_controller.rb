@@ -4,7 +4,7 @@ class ActivitiesController < ApplicationController
 
     before_action :authorized
 
-    before_action :set_activity, only: [ :show, :edit, :update, :destroy, :add_question]
+    before_action :set_activity, only: [ :show, :edit, :update, :destroy, :add_question, :quit_activity_question]
 
     def index
         @activities = Activity.where(responsible: helpers.current_user[ :name])
@@ -62,6 +62,18 @@ class ActivitiesController < ApplicationController
     @activity.destroy
     flash[ :alert] = 'Successfully deleted activity'
     redirect_to activities_path
+    end
+
+    def quit_activity_question
+      @question = Question.find params[ :question]
+
+      query = "DELETE from activities_questions WHERE activity_id = '#{@activity.id}' AND question_id = '#{@question.id}'"
+      ActiveRecord::Base.connection.exec_query(query)
+    
+      flash[ :alert] = 'Successfully quit question'
+    
+      redirect_to activity_path
+
     end
 
     private 
