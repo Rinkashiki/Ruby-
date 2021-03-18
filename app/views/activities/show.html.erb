@@ -9,7 +9,7 @@
     <% end %>
     <% flash.delete(:alert) %>
     <h1>Actividad</h1>
-    <div class="elem rounded">
+    <div class="elem activity rounded">
       <p>Nombre: <%= @activity.name %></p>
       <p>Responsable: <%= @activity.responsible %></p>
       <p>Fecha de inicio: <%= @activity.initial_date.strftime("%d-%m-%Y") %></p>
@@ -20,6 +20,7 @@
       <p><%= link_to 'Añadir Pregunta', new_question_path(activity: @activity), class: "btn btn-primary" %></p>
     </div>
     <% if !@questions.blank? %>
+      <h2>Preguntas</h2>
       <div class="center">
         <%= render @questions %>
       </div>

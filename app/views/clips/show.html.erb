@@ -25,17 +25,27 @@
       <div>
         <h3 class="text-white">Pregunta</h3>
         <% if !@question.nil? %>
-        <div class="center topic rounded">
+        <p class="center topic question bg-secondary rounded">
           <%= @question.question %>
+          &emsp;
           <%= link_to '-', quit_question_path, class: 'btn btn-primary' %>
-        </div>
+        </p>
           <h3 class="text-white">Respuestas</h3>
           <% if !@answers.nil? %>
             <% @answers.each do |a| %>
-              <div class="center topic rounded">
-                <%= a.description %>
-                <%= button_to '-', answer_path(a, clip: @clip, question: @question), method: :delete, class: 'btn btn-primary' %>
-              </div>
+              <% if a.option == "Falso" %>
+                <div class="center topic question wrong-answer rounded">
+                  <%= a.description %>
+                  &emsp;
+                  <%= button_to '-', answer_path(a, clip: @clip, question: @question), method: :delete, class: 'btn btn-primary' %>
+                </div>
+              <% else %>
+                <div class="center topic question correct-answer rounded">
+                  <%= a.description %>
+                  &emsp;
+                  <%= button_to '-', answer_path(a, clip: @clip, question: @question), method: :delete, class: 'btn btn-primary' %>
+                </div>
+              <% end %>
             <% end %>
             <% if @answers.length() < 4 && @question.question_type != "Pregunta Abierta"%>
               <p class='m-3'><%= link_to 'Añadir respuesta', new_answer_path(question: @question.id, clip: @clip.id), class: 'btn btn-primary' %></p>
@@ -51,8 +61,9 @@
       <% if Topic.any? %>
         <h3 class="text-white">Topics</h3>
         <% @topics.each do |t| %>
-          <div class="center topic rounded">
+          <div class="center topic question bg-secondary rounded">
             <%= t['description'] %> <!--:topic => t['id']-->
+            &emsp;
             <%= link_to '-', quit_topic_path(:topic => t['id']), class: 'btn btn-primary' %>
           </div>
         <% end %> 

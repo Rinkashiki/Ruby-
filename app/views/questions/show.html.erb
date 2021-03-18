@@ -9,7 +9,7 @@
     <% end %>
     <% flash.delete(:alert) %>
     <h1>Pregunta</h1>
-    <div class="elem rounded">
+    <div class="elem activity rounded">
       <p>Pregunta: <%= @question.question %></p>
       <p>Tipo de pregunta: <%= @question.question_type %></p>
     </div>
@@ -28,13 +28,19 @@
         <h2>Respuestas</h2>
         <% if !@answers.blank? %>
           <% @answers.each do |a| %>
-            <div class="center topic rounded">
-              <p display="in-line">
-                Respuesta: <%= a.description %> 
-                Opción:  <%= a.option %>  
+            <% if a.option == "Falso" %>
+              <div class="center topic question wrong-answer rounded">
+                <%= a.description %>  
+                &emsp;
                 <%= button_to '-', answer_path(a, question: @question[ :id]), method: :delete, class: 'btn btn-primary' %>
-              </p>
-            </div>
+              </div>
+            <% else %>
+            <div class="center topic question correct-answer rounded">
+                <%= a.description %>
+                &emsp;  
+                <%= button_to '-', answer_path(a, question: @question[ :id]), method: :delete, class: 'btn btn-primary' %>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
         <% if @answers.length() < 4 %>

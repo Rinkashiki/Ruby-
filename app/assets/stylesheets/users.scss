@@ -45,6 +45,14 @@ margin-top: 100px;
     margin-left: 20vw;
 }
 
+.correct-answer {
+    background: #90af87;
+}
+
+.wrong-answer {
+    background: #bd8379;;
+}
+
 /*
     ADDITIONAL STYLE, NOT IMPORTANT TO MAKE THINGS WORK BUT TO MAKE IT A BIT NICER :)
 */
@@ -187,10 +195,15 @@ a, a:hover, a:focus {
     }
 
     .elem {
+        width: 70vw;
         background: #6c757d;
         color: white;
         padding: 1vh;
         margin: 5vw;
+    }
+
+    .activity {
+        margin-left: -5vw;
     }
 
     .video {
@@ -199,12 +212,14 @@ a, a:hover, a:focus {
     }
 
     .topic {
-        background: #6c757d;
         color: white;
         width: 70vw;
         padding: 1vh;
         margin: 4vw;
-        margin-left: 0vw;
+    }
+
+    .question {
+        margin-left: -5vw;
     }
 
     .topic-form {
@@ -341,7 +356,6 @@ a, a:hover, a:focus {
     }
 
     .topic {
-        background: #6c757d;
         color: white;
         width: 80vw;
         padding: 1vh;
@@ -484,7 +498,6 @@ a, a:hover, a:focus {
     }
 
     .topic {
-        background: #6c757d;
         color: white;
         width: 80vw;
         padding: 1vh;
@@ -615,18 +628,17 @@ a, a:hover, a:focus {
     }
 
     .topic {
-        background: #6c757d;
         color: white;
-        width: 75vw;
+        width: 55vw;
         padding: 1vh;
         margin: 2vw;
-        margin-left: 4vw;
+        margin-left: 15vw;
     }
 
     .topic-form {
         background: #6c757d;
         color: white;
-        width: 65vw;
+        width: 60vw;
         padding: 1vh;
         margin: 2vw;
         margin-left: 0vw;
