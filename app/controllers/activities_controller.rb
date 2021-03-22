@@ -1,9 +1,12 @@
 class ActivitiesController < ApplicationController
 
+    # Render navigation bar  
     layout 'in_session', only: [ :index, :new, :show, :edit, :destroy, :add_question]
 
+    # Check user is logged
     before_action :authorized
 
+    # Extract the current activity before any method is executed
     before_action :set_activity, only: [ :show, :edit, :update, :destroy, :add_question, :quit_activity_question]
 
     def index
@@ -15,6 +18,8 @@ class ActivitiesController < ApplicationController
     end
 
     def create
+
+        # Extract only the activities associated with the current user
         aux_activity = Activity.find_by_name(params[ :activity][ :name])
         activities = Activity.where(responsible: helpers.current_user[ :name])
 
@@ -26,6 +31,7 @@ class ActivitiesController < ApplicationController
           @activity[ :grade] = 5
           @activity[ :responsible] = helpers.current_user[ :name]
 
+          # Save activity in DB
           if @activity.save
             flash[ :alert] = "Succesfully created activity"
             redirect_to activities_path
@@ -40,9 +46,10 @@ class ActivitiesController < ApplicationController
     end
 
     def show
+        # Extract questions associated with the current activity
         query = "SELECT q.id, q.question, q.question_type FROM questions q JOIN activities_questions aq ON aq.question_id = q.id 
         WHERE aq.activity_id = '#{@activity.id}'"
-        #@questions = ActiveRecord::Base.connection.exec_query(query)
+
         @questions = Question.find_by_sql(query)
     end
 

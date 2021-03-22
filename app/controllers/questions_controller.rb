@@ -1,9 +1,12 @@
 class QuestionsController < ApplicationController
 
+  # Render navigation bar
     layout 'in_session', only: [ :index, :new, :show]
 
+    # Check user is logged
     before_action :authorized
 
+    # Extract the current question before any method is executed
     before_action :set_question, only: [ :show, :add_activity_question]
 
     def index
@@ -13,22 +16,28 @@ class QuestionsController < ApplicationController
     def new
 
         if !params[ :activity].nil?
+          # Question created from activity
           @activity = Activity.find params[ :activity]
 
+          # Extract questions that are not associated with the current activity. For existing questions section
           query = "SELECT id, question, question_type from questions except 
           SELECT q.id, q.question, q.question_type from questions q join activities_questions aq on 
           q.id = aq.question_id where aq.activity_id = '#{@activity.id}'"
   
           @questions = Question.find_by_sql(query)
 
+           # Extract all clips. For Video Trivia section
           @clips = Clip.all
 
+          # Extract clips with decision and sanction present. For Video Test section
           @evaluated_clips = Clip.where.not(decision_id: nil, sanction_id: nil)
 
         else 
+          # Questions created from clip
           @questions = Question.where(question_type: "Trivia")
         end
 
+        # Every question
         @question = Question.new 
 
         @type = params[ :type]
@@ -45,12 +54,12 @@ class QuestionsController < ApplicationController
 
     def create
 
-      # Access from activity
+      # Question created from activity
       if !params[ :activity].nil?
         @activity = Activity.find params[ :activity]
       end
 
-      # Access from clip
+      # Question created from clip
       if !params[ :clip].nil?
         @clip = Clip.find params[ :clip]
       end
@@ -61,6 +70,7 @@ class QuestionsController < ApplicationController
         @question = Question.new question_params
       end
 
+      # Determine question type
         if params[ :type].nil?
           @question[ :question_type] = "Trivia"
         else
@@ -77,13 +87,16 @@ class QuestionsController < ApplicationController
         
         if @question.save
             flash[ :alert] = "Succesfully created question"
+            
             if !params[ :activity].nil?
+              # Question created from activity
               query = "INSERT into activities_questions (activity_id, question_id, created_at, updated_at) 
               values ('#{@activity.id}', '#{@question.id}', now(), now())"
               ActiveRecord::Base.connection.exec_query(query)
 
               redirect_to @activity
             else
+              # Question created from clip
               @clip.update(question_id: @question[ :id])
 
               redirect_to @clip
@@ -105,13 +118,14 @@ class QuestionsController < ApplicationController
     end
 
     def show
-        #@question = Question.find params[ :id]
 
         @answers = Answer.where(question_id: @question[ :id])
 
+        # Show question from clip
         if !@question[ :clip_id].nil?
           @clip = Clip.find(@question[ :clip_id])
 
+          # Show decision and sanction if question is Video Test type
           if !@clip[ :decision_id].nil?
             @decision = Decision.find(@clip[ :decision_id])
           end
@@ -125,6 +139,7 @@ class QuestionsController < ApplicationController
 
       @activity = Activity.find params[ :activity]
 
+      # Associate selected question with the current activity
       query = "INSERT into activities_questions (activity_id, question_id, created_at, updated_at) 
       values ('#{@activity.id}', '#{@question.id}', now(), now())"
 

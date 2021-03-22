@@ -1,9 +1,12 @@
 class ClipsController < ApplicationController
 
+  # Render navigation bar
   layout 'in_session', only: [ :index, :show, :new, :edit, :add_topic]
 
+  # Check user is logged
   before_action :authorized 
 
+  # Extract the current clip before any method is executed
   before_action :set_clip, only: [ :show, :destroy, :edit, :update, :add_topic, :add_topic_post, :quit_topic, :quit_question]
   
   def index
@@ -20,7 +23,7 @@ class ClipsController < ApplicationController
     @clip[ :clipName] = File.basename(params[ :clip][ :video].original_filename, '.mp4').truncate(20)
     @clip[ :uploadUser] = helpers.current_user[ :name]
 
-    # Save clips in DB
+    # Save clip in DB
     if @clip.save
       flash[ :alert] = 'Successfully uploaded video'
       redirect_to new_clip_path
@@ -38,10 +41,12 @@ class ClipsController < ApplicationController
       @sanction = Sanction.find(@clip[ :sanction_id])
     end
     
+    # Show only the topics associated with the current clip
     query = "SELECT t.id, t.description FROM topics t JOIN clips_topics ct ON ct.topic_id = t.id WHERE ct.clip_id = '#{@clip.id}'"
 
     @topics = ActiveRecord::Base.connection.exec_query(query)
 
+    # Show questions and answers for current clip
     if !@clip[ :question_id].nil?
       @question = Question.find @clip[ :question_id]
     end
@@ -76,6 +81,7 @@ class ClipsController < ApplicationController
   end
 
   def add_topic
+    # Show only the topics that are not associated with the current clip
     query = "SELECT topics.id, topics.description from topics except 
     SELECT t.id, t.description from topics t join clips_topics ct on t.id = ct.topic_id where ct.clip_id = '#{@clip.id}'"
 
@@ -124,6 +130,7 @@ class ClipsController < ApplicationController
     @clip = Clip.find params[ :id]
   end
 
+  # Exception rised when the user is trying to upload video without attached one
   rescue_from ActionController::ParameterMissing do |e|
     flash[ :alert] = 'Video not attached'
     redirect_to new_clip_path

@@ -20,11 +20,12 @@
           <% if !@clips.nil? %>
             <% @clips.each do |c| %>
               <div class="col-xs-1 col-md-3 elem rounded">
-                <p class="center"><%= c.clipName %></p>
+                <p class="center">Nombre del clip: <%= c.clipName %></p>
                 <div class="center">
                   <%= hidden_field_tag(:clip, c.id) %>
                   <p><%= f.submit 'Usar clip', class: 'btn btn-primary' %></p>
                   <% if !c[ :question_id].nil? %>
+                    <p class="center">Pregunta del clip: <%= Question.find(c.question_id).question %></p>
                     <p><%= link_to 'Usar clip con pregunta', add_activity_question_path(id: c.question_id, activity: @activity), class: 'btn btn-primary' %></p>
                   <% end %>
                 </div>

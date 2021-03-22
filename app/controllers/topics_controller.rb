@@ -1,7 +1,12 @@
 class TopicsController < ApplicationController
 
+    # Render navigation bar
     layout 'in_session', only: [ :new, :index, :edit]
 
+    # Check user is logged
+    before_action :authorized 
+
+    # Extract the current topic before any method is executed
     before_action :set_topic, only: [ :edit, :update, :show, :destroy]
 
     def index

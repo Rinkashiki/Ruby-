@@ -1,9 +1,12 @@
  class UsersController < ApplicationController
 
+  # Render navigation bar
   layout 'in_session', only: [ :index, :edit]
 
+  # Permit access to login and sign up
   skip_before_action :authorized, only: [ :new, :create]
 
+  # Extract the current user before any method is executed
   before_action :set_user, only: [ :edit, :update, :show, :destroy]
 
   def index
@@ -20,6 +23,8 @@
   end
 
   def create
+
+    # Default profile when signing up is 'User'. When another user signs you up, he/she can choose user's new profile
     if !params[ :user][ :profile].nil?
       @profile = Profile.find_by_name(params[ :user][ :profile])
     else
@@ -29,6 +34,7 @@
     @user[ :password] = SecureRandom.hex
     
     if @user.save
+      # Send an email to new registered user with him/her credentials
       UserMailer.with(user: @user).new_user_email.deliver_later
       flash[ :alert] = 'Succesfully registered!'
       if logged_in?

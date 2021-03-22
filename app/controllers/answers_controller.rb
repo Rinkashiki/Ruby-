@@ -1,9 +1,12 @@
 class AnswersController < ApplicationController
 
+  # Render navigation bar
     layout 'in_session', only: [ :new]
 
+     # Check user is logged
     before_action :authorized
 
+    # Extract the current question before any method is executed
     before_action :set_question, only: [ :new, :create, :destroy]
 
     #protect_from_forgery :except => [ :new, :create ]
@@ -37,6 +40,8 @@ class AnswersController < ApplicationController
 
         #@question = Question.find(params[ :question])
 
+        # Save answer in DB. Redirect to question if we have created the answer from question. 
+        # Redirect to clip if we have created it from clip.
         if @answer.save
             flash[ :alert] = "Succesfully created answer"
             if !@clip.nil?
@@ -71,6 +76,7 @@ class AnswersController < ApplicationController
         @answer.destroy
         flash[ :alert] = 'Successfully deleted answer'
 
+        # Redirect to question if we have created the answer from question. Redirect to clip if we have created it from clip.
         if !@clip.nil?
           redirect_to @clip
         else
