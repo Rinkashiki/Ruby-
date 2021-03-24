@@ -94,7 +94,7 @@ class QuestionsController < ApplicationController
               values ('#{@activity.id}', '#{@question.id}', now(), now())"
               ActiveRecord::Base.connection.exec_query(query)
 
-              redirect_to @activity
+              redirect_to @question
             else
               # Question created from clip
               @clip.update(question_id: @question[ :id])

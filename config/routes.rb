@@ -41,6 +41,17 @@ Rails.application.routes.draw do
 
   get 'activities/:id/quit_activity_question', to: 'activities#quit_activity_question', as: 'quit_activity_question'
 
+  get 'activities/:id/activity_users', to: 'activities#activity_users', as: 'activity_users'
+
+  get 'activities/:id/add_activity_user', to: 'activities#add_activity_user', as: 'add_activity_user'
+
+  get 'activities/:id/add_activity_user_post', to: 'activities#add_activity_user_post', as: 'add_activity_user_post'
+
+  get 'activities/:id/quit_activity_user', to: 'activities#quit_activity_user', as: 'quit_activity_user'
+
+  # Routes for activities_users
+  resources :activities_users, only: [ :index]
+
   # Routes for questions
   resources :questions, only: [:index, :new, :create, :show]
 

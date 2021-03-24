@@ -17,7 +17,10 @@
       <p>Fecha de resultado: <%= @activity.result_date.strftime("%d-%m-%Y") %></p>
       <p>Nota de corte: <%= @activity.grade %></p>
       <p><%= link_to 'Edit', edit_activity_path(@activity), class: "btn btn-primary" %></p>
-      <p><%= link_to 'Añadir Pregunta', new_question_path(activity: @activity), class: "btn btn-primary" %></p>
+      <p>
+        <%= link_to 'Añadir Pregunta', new_question_path(activity: @activity), class: "btn btn-primary" %>
+        <%= link_to 'Usuarios', activity_users_path, class: "btn btn-primary" %>
+      </p>
     </div>
     <% if !@questions.blank? %>
       <h2>Preguntas</h2>
@@ -25,4 +28,5 @@
         <%= render @questions %>
       </div>
     <% end %>
+  </div>
    

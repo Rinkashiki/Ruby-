@@ -1,13 +1,14 @@
 class ActivitiesController < ApplicationController
 
     # Render navigation bar  
-    layout 'in_session', only: [ :index, :new, :show, :edit, :destroy, :add_question]
+    layout 'in_session', only: [ :index, :new, :show, :edit, :destroy, :add_question, :my_activities, :activity_users, :add_activity_user]
 
     # Check user is logged
     before_action :authorized
 
     # Extract the current activity before any method is executed
-    before_action :set_activity, only: [ :show, :edit, :update, :destroy, :add_question, :quit_activity_question]
+    before_action :set_activity, only: [ :show, :edit, :update, :destroy, :add_question, :quit_activity_question, :add_activity_user, 
+                                        :add_activity_user_post, :activity_users, :quit_activity_user]
 
     def index
         @activities = Activity.where(responsible: helpers.current_user[ :name])
@@ -71,6 +72,7 @@ class ActivitiesController < ApplicationController
     redirect_to activities_path
     end
 
+    # Activity-Question Association Management
     def quit_activity_question
       @question = Question.find params[ :question]
 
@@ -81,6 +83,45 @@ class ActivitiesController < ApplicationController
     
       redirect_to activity_path
 
+    end
+
+    # Activity-User Association Management
+    def activity_users
+      query = "SELECT u.id, u.name, u.surname from users u JOIN activities_users au ON u.id = au.user_id
+      WHERE '#{@activity.id}' = au.activity_id"
+
+      @users = User.find_by_sql(query)
+    end
+
+    def add_activity_user
+ 
+      query = "SELECT id, name, surname from users except SELECT u.id, u.name, u.surname from users u 
+      JOIN activities_users au ON u.id = au.user_id WHERE '#{@activity.id}' = au.activity_id"
+
+      @users = User.find_by_sql(query)
+    end
+
+    def quit_activity_user
+
+      @user = User.find params[ :user]
+
+      query = "DELETE from activities_users WHERE activity_id = '#{@activity.id}' AND user_id = '#{@user.id}'"
+      ActiveRecord::Base.connection.exec_query(query)
+      
+      flash[ :alert] = 'Successfully quit user'
+      redirect_to activity_users_path
+    end
+
+    def add_activity_user_post
+      @user = User.find params[ :user]
+
+      query = "INSERT into activities_users (activity_id, user_id, created_at, updated_at) 
+              values ('#{@activity.id}', '#{@user.id}', now(), now())"
+      ActiveRecord::Base.connection.exec_query(query)
+
+      flash[ :alert] = 'Successfully added user'
+
+      redirect_to activity_users_path
     end
 
     private 
