@@ -12,6 +12,7 @@
     <div class="elem activity rounded">
       <p>Pregunta: <%= @question.question %></p>
       <p>Tipo de pregunta: <%= @question.question_type %></p>
+      <p>Tiempo para responder: <%= @question.response_time %>s</p>
     </div>
     <div>
       <% if !@clip.nil?%>
@@ -43,7 +44,7 @@
             <% end %>
           <% end %>
         <% end %>
-        <% if @answers.length() < 4 %>
+        <% if @answers.length() < 10 %>
           <p class='m-3'><%= link_to 'Añadir respuesta', new_answer_path(question: @question), class: 'btn btn-primary' %></p>
         <% end %>
       <% end %>

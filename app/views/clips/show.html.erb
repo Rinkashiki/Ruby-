@@ -25,11 +25,11 @@
       <div>
         <h3 class="text-white">Pregunta</h3>
         <% if !@question.nil? %>
-        <p class="center topic question bg-secondary rounded">
-          <%= @question.question %>
-          &emsp;
-          <%= link_to '-', quit_question_path, class: 'btn btn-primary' %>
-        </p>
+          <p class="center topic question bg-secondary rounded">
+            <%= @question.question %>
+            &emsp;
+            <%= link_to '-', quit_question_path, class: 'btn btn-primary' %>
+          </p>
           <h3 class="text-white">Respuestas</h3>
           <% if !@answers.nil? %>
             <% @answers.each do |a| %>
@@ -47,7 +47,7 @@
                 </div>
               <% end %>
             <% end %>
-            <% if @answers.length() < 4 && @question.question_type != "Pregunta Abierta"%>
+            <% if @answers.length() < 10 && @question.question_type != "Pregunta Abierta"%>
               <p class='m-3'><%= link_to 'Añadir respuesta', new_answer_path(question: @question.id, clip: @clip.id), class: 'btn btn-primary' %></p>
             <% end %>
           <% end %>

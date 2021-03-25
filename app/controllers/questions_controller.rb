@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
     before_action :authorized
 
     # Extract the current question before any method is executed
-    before_action :set_question, only: [ :show, :add_activity_question]
+    before_action :set_question, only: [ :show, :add_activity_question, :add_clip_question]
 
     def index
         @questions = Question.all
@@ -146,14 +146,26 @@ class QuestionsController < ApplicationController
       ActiveRecord::Base.connection.exec_query(query)
 
       flash[ :alert] = 'Successfully added question'
-      redirect_to @activity
+      redirect_to @question
+
+    end
+
+    def add_clip_question
+
+      @clip = Clip.find params[ :clip]
+
+      # Associate selected question with the current clip
+      @clip.update(question_id: @question[ :id])
+ 
+       flash[ :alert] = 'Successfully added question'
+       redirect_to @clip
 
     end
 
     private
 
     def question_params
-        params.require( :question).permit( :question)
+        params.require( :question).permit( :question, :response_time)
     end
 
     def set_question

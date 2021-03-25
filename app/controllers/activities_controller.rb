@@ -95,10 +95,13 @@ class ActivitiesController < ApplicationController
 
     def add_activity_user
  
+      # Extract users not associated with the current activity. Exclude also the current user
       query = "SELECT id, name, surname from users except SELECT u.id, u.name, u.surname from users u 
-      JOIN activities_users au ON u.id = au.user_id WHERE '#{@activity.id}' = au.activity_id"
+      JOIN activities_users au ON u.id = au.user_id WHERE '#{@activity.id}' = au.activity_id
+      except SELECT id, name, surname from users WHERE id = '#{helpers.current_user[ :id]}'"
 
       @users = User.find_by_sql(query)
+      
     end
 
     def quit_activity_user

@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_111422) do
   create_table "questions", charset: "utf8mb4", force: :cascade do |t|
     t.string "question"
     t.string "question_type"
+    t.decimal "response_time", precision: 10
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "clip_id"

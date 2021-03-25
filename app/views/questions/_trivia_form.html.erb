@@ -9,8 +9,14 @@
         <% end %>
         <% flash.delete(:alert) %>
         <h1>Trivia</h1>
-        <%= f.label :question, class: 'text-white' %><br>
-        <%= f.text_field :question, class: 'textBox' %>
+        <p>
+          <%= f.label :question, class: 'text-white' %><br>
+          <%= f.text_field :question, class: 'textBox' %>
+        </p>
+        <p>
+          <%= f.label :response_time, class: 'text-white' %><br>
+          <%= f.number_field :response_time, class: 'textBox', value: 20 %>
+        </p>
         <% if !@activity.nil? %>
           <%= hidden_field_tag(:activity, @activity.id) %>
         <% end %>  

@@ -16,8 +16,10 @@
             <%= link_to '-', quit_activity_user_path(user: u[ :id]), class: 'btn btn-primary' %>
           </div>
         <% end %>
-        <div class="center mb-5">
-          <%= link_to 'Añadir usuario', add_activity_user_path, class: 'btn btn-primary' %>
-        </div>
+        <% if @users.length() < User.all.length() - 1 %>
+          <div class="center mb-5">
+            <%= link_to 'Añadir usuario', add_activity_user_path, class: 'btn btn-primary' %>
+          </div>
+        <% end %>
     </div>
 </div>

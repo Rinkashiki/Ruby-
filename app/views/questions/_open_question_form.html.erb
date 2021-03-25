@@ -9,8 +9,14 @@
         <% end %>
         <% flash.delete(:alert) %>
         <h2>Pregunta abierta</h2><br>
+        <p>
         <%= f.label :question, class: 'text-white' %><br>
         <%= f.text_field :question, class: 'textBox' %><br>
+        </p>
+        <p>
+        <%= f.label :response_time, class: 'text-white' %><br>
+        <%= f.number_field :response_time, value: 60, class: 'textBox' %>
+        </p>
         <% if !@activity.nil? %>
           <%= hidden_field_tag(:activity, @activity.id) %>
         <% end %>

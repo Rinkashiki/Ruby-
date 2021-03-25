@@ -57,6 +57,8 @@ Rails.application.routes.draw do
 
   get 'questions/:id/add_activity_question', to: 'questions#add_activity_question', as: 'add_activity_question'
 
+  get 'questions/:id/add_clip_question', to: 'questions#add_clip_question', as: 'add_clip_question'
+
   # Routes for answers
   resources :answers, only: [:index, :new, :create, :show, :destroy]
 
