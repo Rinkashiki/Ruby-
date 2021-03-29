@@ -23,9 +23,9 @@
         <% else %>
           <%= link_to 'Trivia', new_question_path(clip: @clip, type: 'Trivia'), class: 'btn btn-primary m-1' %>
           <%= link_to 'Pregunta Abierta', new_question_path(clip: @clip, type: 'Pregunta Abierta'), class: 'btn btn-primary m-1' %>
-          <% if !@questions.blank? %>
+          <!--<% if !@questions.blank? %>
             <%= link_to 'Pregunta Existente', new_question_path(clip: @clip, type: 'Pregunta Existente'), class: 'btn btn-primary m-1' %>
-          <% end %>  
+          <% end %>-->
         <% end %>
       </div>
       <div id="questionForm">

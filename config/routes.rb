@@ -52,6 +52,8 @@ Rails.application.routes.draw do
   # Routes for activities_users
   resources :activities_users, only: [ :index]
 
+  get 'activities_users/doing_activity', to: 'activities_users#doing_activity', as: 'doing_activity'
+
   # Routes for questions
   resources :questions, only: [:index, :new, :create, :show]
 

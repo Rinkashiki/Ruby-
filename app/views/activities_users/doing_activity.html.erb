@@ -1,0 +1,25 @@
+<%= stylesheet_link_tag 'users' %>
+<div class="container">
+  <br>
+  <div class="center handheld_display">
+    <% flash.each do |type, msg| %>
+      <div class="alert alert-success alert-dismissible d-inline-block" role="alert">
+        <%= msg %>
+      </div> 
+    <% end %>
+    <% flash.delete(:alert) %>
+    <h1>Pregunta</h1>
+    <% if @type == 'Trivia' %>
+      <%= render 'doing_trivia' %>
+    <% end %>
+    <% if @type == 'Video Trivia' %>
+      <%= render 'doing_video_trivia' %>
+    <% end %>
+    <% if @type == 'Video Test' %>
+      <%= render 'doing_video_test' %>
+    <% end %>
+    <% if @type == 'Pregunta Abierta' %>
+      <%= render 'doing_open_question' %>
+    <% end %>
+  </div>
+</div>

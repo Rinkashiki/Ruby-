@@ -26,9 +26,9 @@ class ActivitiesController < ApplicationController
 
         if !aux_activity.in?(activities)
           @activity = Activity.new activity_params
-          @activity[ :initial_date] = Time.now.strftime("%Y-%m-%d")
-          @activity[ :final_date] = Time.now.strftime("%Y-%m-%d")
-          @activity[ :result_date] = Time.now.strftime("%Y-%m-%d")
+          @activity[ :initial_date] = Time.now.strftime("%d/%m/%Y")
+          @activity[ :final_date] = Time.now.strftime("%d/%m/%Y")
+          @activity[ :result_date] = Time.now.strftime("%d/%m/%Y")
           @activity[ :grade] = 5
           @activity[ :responsible] = helpers.current_user[ :name]
 

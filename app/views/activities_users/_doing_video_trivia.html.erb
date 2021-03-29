@@ -1,0 +1,28 @@
+<h1>Video Trivia</h1>
+<div class="elem activity rounded">
+  <p>Pregunta: <%= @question.question %></p>
+  <p>Tiempo para responder: <%= @question.response_time %>s</p>
+</div>
+<div>
+  <h2>Video</h2>
+  <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
+</div>
+<div>
+  <h2>Respuestas</h2>
+  <% if !@answers.blank? %>
+    <% @answers.each do |a| %>
+      <div class="center topic question wrong-answer rounded">
+        <%= radio_button_tag :user_answer, a.description %>
+      </div>
+    <% end %>
+  <% end %>
+  <% if @n_question < @total_questions - 1 %>
+    <div class="center mb-5">
+      <%= link_to 'Siguiente', doing_activity_path(activity: @activity.id, n_question: @n_question + 1), class: 'btn btn-primary' %>
+    </div> 
+  <% else %>
+    <div class="center mb-5">
+      <%= link_to 'Finalizar actividad', activities_users_path, class: 'btn btn-primary' %>
+    </div> 
+  <% end %>
+</div>

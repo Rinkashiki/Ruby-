@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>Pregunta abierta</h1>
+  <div class="elem activity rounded">
+    <p>Pregunta: <%= @question.question %></p>
+    <p>Tiempo para responder: <%= @question.response_time %>s</p>
+  </div>
+  <div>
+    <br>
+    <%= text_field_tag :user_answer, class:'textBox' %>
+    <% if @n_question < @total_questions - 1 %>
+    <div class="center mb-5">
+      <%= link_to 'Siguiente', doing_activity_path(activity: @activity.id, n_question: @n_question + 1), class: 'btn btn-primary' %>
+    </div> 
+  <% else %>
+    <div class="center mb-5">
+      <%= link_to 'Finalizar actividad', activities_users_path, class: 'btn btn-primary' %>
+    </div> 
+  <% end %>
+  </div>
+</div>
