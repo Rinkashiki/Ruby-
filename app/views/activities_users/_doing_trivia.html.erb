@@ -1,3 +1,4 @@
+<div class="container">
 <h1>Trivia</h1>
 <div class="elem activity rounded">
   <p>Pregunta: <%= @question.question %></p>
@@ -7,7 +8,8 @@
   <h2>Respuestas</h2>
   <% if !@answers.blank? %>
     <% @answers.each do |a| %>
-      <div class="center topic question wrong-answer rounded">
+      <div class="center topic question rounded">
+        <%= a.description %>
         <%= radio_button_tag :user_answer, a.description %>  
       </div>
     <% end %>
@@ -21,4 +23,5 @@
       <%= link_to 'Finalizar actividad', activities_users_path, class: 'btn btn-primary' %>
     </div> 
   <% end %>
+</div>
 </div>

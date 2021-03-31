@@ -6,7 +6,7 @@
   </div>
   <div>
     <br>
-    <%= text_field_tag :user_answer, class:'textBox' %>
+    <p><%= text_field_tag :user_answer%></p>
     <% if @n_question < @total_questions - 1 %>
     <div class="center mb-5">
       <%= link_to 'Siguiente', doing_activity_path(activity: @activity.id, n_question: @n_question + 1), class: 'btn btn-primary' %>

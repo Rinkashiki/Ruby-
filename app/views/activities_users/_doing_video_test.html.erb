@@ -1,3 +1,4 @@
+<div class="container">
 <h1>Video Test</h1>
 <div class="elem activity rounded">
   <p>Pregunta: <%= @question.question %></p>
@@ -5,7 +6,7 @@
 </div>
 <div>
   <h2>Video</h2>
-  <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
+  <p><%= video_tag @clip.video.to_s, autoplay: true, class: "video", id: "video" %></p>
 </div>
 <div>
   <h2>Respuestas</h2>
@@ -28,4 +29,5 @@
       <%= link_to 'Finalizar actividad', activities_users_path, class: 'btn btn-primary' %>
     </div> 
   <% end %>
+</div>
 </div>

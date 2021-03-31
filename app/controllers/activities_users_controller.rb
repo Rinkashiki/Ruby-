@@ -28,6 +28,9 @@ class ActivitiesUsersController < ApplicationController
 
         @type = @question[ :question_type]
 
+        # Extract answers of the current question
+        @answers = Answer.where(question_id: @question.id)
+
         # For Video Trivia and Video Test
         if !@question.clip_id.nil?
           @clip = Clip.find(@question.clip_id)

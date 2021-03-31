@@ -5,14 +5,16 @@
 </div>
 <div>
   <h2>Video</h2>
-  <p><%= video_tag @clip.video.to_s, controls: true, class: "video" %></p>
+  <p><%= video_tag @clip.video.to_s, autoplay: true, class: "video", id: "video" %></p>
 </div>
 <div>
   <h2>Respuestas</h2>
   <% if !@answers.blank? %>
     <% @answers.each do |a| %>
-      <div class="center topic question wrong-answer rounded">
-        <%= radio_button_tag :user_answer, a.description %>
+      <div class="center topic bg-secondary rounded">
+      <%= radio_button_tag :user_answer, a.description %>
+      &emsp;
+      <%= a.description %>
       </div>
     <% end %>
   <% end %>
