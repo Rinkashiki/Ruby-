@@ -1,33 +1,74 @@
-<div class="container">
-<h1>Video Test</h1>
-<div class="elem activity rounded">
-  <p>Pregunta: <%= @question.question %></p>
-  <p>Tiempo para responder: <%= @question.response_time %>s</p>
-</div>
-<div>
-  <h2>Video</h2>
-  <p><%= video_tag @clip.video.to_s, autoplay: true, class: "video", id: "video" %></p>
-</div>
-<div>
-  <h2>Respuestas</h2>
-  <% Decision.all.each do |d| %>
-    <div class="center topic question wrong-answer rounded">
-      <%= radio_button_tag :user_decision, d.description %>
+<br>
+<div class="container center">
+  <h2>Video Test</h2>
+  <div>
+    <h3>Video</h3>
+    <p><%= video_tag @clip.video.to_s, autoplay: true, class: "video", id: "video" %></p>
+  </div>
+  <div class="not-visible", id="response">
+    <div class="elem activity rounded">
+      <p>Pregunta: <%= @question.question %></p>
+      <p>Tiempo para responder: <%= @question.response_time %>s</p>
     </div>
-  <% end %>
-  <% Sanction.all.each do |s| %>
-    <div class="center topic question wrong-answer rounded">
-      <%= radio_button_tag :user_sanction, s.description %>
+    <div>
+      <h2 class="timer center rounded" id="timer"></h2><br>
+      <h3>Respuestas</h3><br>
+      <div>
+      <h3>Decisión</h3>
+        <% Decision.all.each do |d| %>
+          <div class="center topic bg-secondary question rounded">
+            <%= radio_button_tag :user_decision, d.description %>
+            &emsp;
+            <%= d.description %>
+          </div>
+        <% end %>
+      </div>
+      <div>
+        <h3>Sanción</h3>
+        <% Sanction.all.each do |s| %>
+          <div class="center topic bg-secondary question rounded">
+            <%= radio_button_tag :user_sanction, s.description %>
+            &emsp;
+            <%= s.description %>
+          </div>
+        <% end %>
+      </div>
+      <% if @n_question < @total_questions - 1 %>
+        <div class="center mb-5">
+          <%= link_to 'Siguiente', doing_activity_path(activity: @activity.id, n_question: @n_question + 1), class: 'btn btn-primary' %>
+        </div> 
+      <% else %>
+        <div class="center mb-5">
+          <%= link_to 'Finalizar actividad', activities_users_path, class: 'btn btn-primary' %>
+        </div> 
+      <% end %>
     </div>
-  <% end %>
-  <% if @n_question < @total_questions - 1 %>
-    <div class="center mb-5">
-      <%= link_to 'Siguiente', doing_activity_path(activity: @activity.id, n_question: @n_question + 1), class: 'btn btn-primary' %>
-    </div> 
-  <% else %>
-    <div class="center mb-5">
-      <%= link_to 'Finalizar actividad', activities_users_path, class: 'btn btn-primary' %>
-    </div> 
-  <% end %>
+  </div>
 </div>
-</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#video').on('ended', function(){
+      $('#response').toggleClass('not-visible');
+      var countdown = <%= @question.response_time.to_i %>
+      var x = setInterval(function() {
+        --countdown
+        if (countdown % 60 < 10){
+          $('#timer').html("0" + Math.floor(countdown / 60) + ":" + "0" + countdown % 60);
+        }    
+        else{
+          $('#timer').html("0" + Math.floor(countdown / 60) + ":" + countdown % 60);
+        }
+
+        if(countdown <= 0){
+          if (<%= @n_question %> < <%= @total_questions - 1 %>){
+            window.location.href="/activities_users/doing_activity?activity=<%= @activity.id %>&n_question=<%= @n_question + 1 %>"
+          } else{
+            window.location.href="/activities_users"
+          }
+        }
+      }, 1000);
+    });
+  });
+</script>

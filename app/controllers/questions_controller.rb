@@ -64,10 +64,12 @@ class QuestionsController < ApplicationController
         @clip = Clip.find params[ :clip]
       end
 
+      # Create question
+      @question = Question.new question_params
+
+      # Established default question for Video Test because it has not question field
       if params[ :type] == "Video Test"
-        @question = Question.new(question: "Video Test")
-      else
-        @question = Question.new question_params
+        @question[ :question] = "Video Test"
       end
 
       # Determine question type

@@ -1,12 +1,13 @@
-<div class="container">
-  <h1>Pregunta abierta</h1>
+<br>
+<div class="center">
+  <h2>Pregunta abierta</h2>
   <div class="elem activity rounded">
     <p>Pregunta: <%= @question.question %></p>
     <p>Tiempo para responder: <%= @question.response_time %>s</p>
   </div>
   <div>
-    <br>
-    <p><%= text_field_tag :user_answer%></p>
+    <h2 class="center timer rounded" id="timer"></h2><br>
+    <p><%= text_area_tag :user_answer, nil, size: '100x5' %></p>
     <% if @n_question < @total_questions - 1 %>
     <div class="center mb-5">
       <%= link_to 'Siguiente', doing_activity_path(activity: @activity.id, n_question: @n_question + 1), class: 'btn btn-primary' %>
@@ -18,3 +19,27 @@
   <% end %>
   </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    var countdown = <%= @question.response_time.to_i %>
+    var x = setInterval(function() {
+      --countdown
+      if (countdown % 60 < 10){
+        $('#timer').html("0" + Math.floor(countdown / 60) + ":" + "0" + countdown % 60);
+      }    
+      else{
+        $('#timer').html("0" + Math.floor(countdown / 60) + ":" + countdown % 60);
+      }
+
+      if(countdown <= 0){
+        if (<%= @n_question %> < <%= @total_questions - 1 %>){
+          window.location.href="/activities_users/doing_activity?activity=<%= @activity.id %>&n_question=<%= @n_question + 1 %>"
+        } else{
+          window.location.href="/activities_users"
+        }
+      }
+    }, 1000);
+  });
+</script>

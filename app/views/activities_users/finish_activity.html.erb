@@ -1,0 +1,33 @@
+<%= stylesheet_link_tag 'users' %>
+<div class="container">
+  <br>
+  <div class="center handheld_display">
+    <% flash.each do |type, msg| %>
+      <div class="alert alert-success alert-dismissible d-inline-block" role="alert">
+        <%= msg %>
+      </div> 
+    <% end %>
+    <% flash.delete(:alert) %>
+    <h1>Actividad finalizada</h1><br>
+    <% @questions.each do |q| %>
+      <div class="center">
+        <div class="elem activity rounded">
+          <p>Pregunta: <%= @question.question %></p>
+          <p>Tipo de pregunta: <%= @question.question_type %></p>
+        </div>
+        <div>
+          <% if @question.question_type == "Trivia" ||  @question.question_type == "Video Trivia" %>
+            <h2>Respuestas</h2>
+            <% if !@answers.blank? %>
+              <% @answers.each do |a| %>
+                <div class="center topic question bg-secondary rounded">
+                  <%= a.description %>  
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+        <div>
+      </div>
+    <% end %>
+  </div>
+</div>

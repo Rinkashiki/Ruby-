@@ -9,7 +9,7 @@
     text-align: center;
 }
 
-h1, h2 {
+h1, h2, h3 {
     color: white;
 }
 
@@ -50,7 +50,15 @@ margin-top: 100px;
 }
 
 .wrong-answer {
-    background: #bd8379;;
+    background: #bd8379;
+}
+
+.timer {
+    color: white;
+}
+
+.not-visible {
+    display: none;
 }
 
 /*
