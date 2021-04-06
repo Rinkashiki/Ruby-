@@ -12,19 +12,29 @@
     <% @questions.each do |q| %>
       <div class="center">
         <div class="elem activity rounded">
-          <p>Pregunta: <%= @question.question %></p>
-          <p>Tipo de pregunta: <%= @question.question_type %></p>
+          <p>Pregunta: <%= q.question %></p>
+          <p>Tipo de pregunta: <%= q.question_type %></p>
         </div>
         <div>
-          <% if @question.question_type == "Trivia" ||  @question.question_type == "Video Trivia" %>
+          <% if q.question_type == "Trivia" ||  q.question_type == "Video Trivia" %>
             <h2>Respuestas</h2>
-            <% if !@answers.blank? %>
-              <% @answers.each do |a| %>
-                <div class="center topic question bg-secondary rounded">
-                  <%= a.description %>  
-                </div>
+              <% Answer.where(question_id: q.id).each_with_index do |a, index| %>
+                <% if a.description == @user_answers[index] %>
+                  <% if a.option == "Falso" %>
+                    <div class="center topic question wrong-answer rounded">
+                      <%= a.description %>  
+                    </div>
+                  <% else %>
+                    <div class="center topic question correct-answer rounded">
+                      <%= a.description %>  
+                    </div>
+                  <% end %>
+                <% else %>
+                  <div class="center topic question bg-secondary rounded">
+                    <%= a.description %>  
+                  </div>
+                <% end %>
               <% end %>
-            <% end %>
           <% end %>
         <div>
       </div>
