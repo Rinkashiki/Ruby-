@@ -54,6 +54,8 @@ Rails.application.routes.draw do
 
   get 'activities_users/doing_activity', to: 'activities_users#doing_activity', as: 'doing_activity'
 
+  get 'activities_users/finish_activity', to: 'activities_users#finish_activity', as: 'finish_activity'
+
   # Routes for questions
   resources :questions, only: [:index, :new, :create, :show]
 

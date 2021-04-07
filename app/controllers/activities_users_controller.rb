@@ -4,7 +4,7 @@ class ActivitiesUsersController < ApplicationController
     layout 'in_session', only: [ :index]
 
     # Extract the current activity before any method is executed
-    before_action :set_activity, only: [ :doing_activity, finish_activity]
+    before_action :set_activity, only: [ :doing_activity, :finish_activity]
 
     def index
         query = "SELECT a.* from activities a JOIN activities_users au ON a.id = au.activity_id 
@@ -39,23 +39,20 @@ class ActivitiesUsersController < ApplicationController
         # Save answers
         if @n_question > 0
 
-          # Extract the answers from activity_user 
-          query = "SELECT answers from activities_users WHERE activity_id = '#{@activity[ :id]}' 
+          # Extract the activity_user entry
+          query = "SELECT * from activities_users WHERE activity_id = '#{@activity[ :id]}' 
           AND user_id = '#{helpers.current_user[ :id]}'"
 
-          @user_answers = ActiveRecord::Base.connection.exec_query(query)
+          activity_user = ActiveRecord::Base.connection.exec_query(query)
 
-          if params[ :user_answer].nil?
-            @users_answers.push("nil")
-          else
-           @users_answers.push(params[ :user_answer])
-          end
+          answer = Answer.find params[ :user_answer]
 
-          # Update answers in DB
-          query = "UPDATE activities_users SET answers = '#{@user_answers}' WHERE activity_id = '#{@activity[ :id]}' 
-          AND user_id = '#{helpers.current_user[ :id]}'"
+          # Save the answer associated with the activity and the user in DB
+          query = "INSERT into activitiy_user_answers (activities_users_id, answer_id, created_at, updated_at) 
+          values ('#{activity_user['id']}', '#{answer.id}', now(), now())"
 
           ActiveRecord::Base.connection.exec_query(query)
+
         end
 
       end
@@ -68,9 +65,9 @@ class ActivitiesUsersController < ApplicationController
         
         @questions = Question.find_by_sql(query)
 
-        #Extract user_answers
-        query = "SELECT answers from activities_users WHERE activity_id = '#{@activity[ :id]}' 
-        AND user_id = '#{helpers.current_user[ :id]}'"
+        # Extract the answers from activity_user_answers 
+        query = "SELECT a.* from answers a JOIN activitiy_user_answers au ON a.id = au.answer_id
+        WHERE activity_id = '#{@activity[ :id]}' AND user_id = '#{helpers.current_user[ :id]}'"
 
         @user_answers = ActiveRecord::Base.connection.exec_query(query)
 

@@ -9,12 +9,17 @@
   <h2 class="timer center rounded" id="timer"></h2><br>
   <h3>Respuestas</h3>
   <% if !@answers.blank? %>
+    <% form_tag 'activities_users/doing_activity' do %>
     <% @answers.each do |a| %>
       <div class="center topic bg-secondary question rounded">
-        <%= radio_button_tag :user_answer, a.description %> 
+        <%= radio_button_tag :user_answer, a.id %> 
+        <!--<div id="rates">
+          <input type="radio" name="answer" value= <%= a.id %> > <%= a.description %> 
+        </div>-->
         &emsp; 
         <%= a.description %>
       </div>
+    <% end %>
     <% end %>
   <% end %>
   <% if @n_question < @total_questions - 1 %>
