@@ -54,6 +54,8 @@ Rails.application.routes.draw do
 
   get 'activities_users/doing_activity', to: 'activities_users#doing_activity', as: 'doing_activity'
 
+  post 'activities_users/doing_activity_post', to: 'activities_users#doing_activity_post', as: 'doing_activity_post'
+
   get 'activities_users/finish_activity', to: 'activities_users#finish_activity', as: 'finish_activity'
 
   # Routes for questions

@@ -9,17 +9,20 @@
     <% end %>
     <% flash.delete(:alert) %>
     <h1>Actividad finalizada</h1><br>
-    <% @questions.each do |q| %>
+    <% @questions.each_with_index do |q, i| %>
+      <br>
+      <h2>Pregunta <%= i + 1 %></h2>
+      <h2> <%= @user_answers.first().id %></h2>
       <div class="center">
-        <div class="elem activity rounded">
+        <div class="elem topic bg-secondary rounded">
           <p>Pregunta: <%= q.question %></p>
           <p>Tipo de pregunta: <%= q.question_type %></p>
         </div>
         <div>
           <% if q.question_type == "Trivia" ||  q.question_type == "Video Trivia" %>
-            <h2>Respuestas</h2>
+            <h3>Respuestas</h3>
               <% Answer.where(question_id: q.id).each_with_index do |a, index| %>
-                <% if a.description == @user_answers[index] %>
+                <% if a.id == @user_answers[index] %>
                   <% if a.option == "Falso" %>
                     <div class="center topic question wrong-answer rounded">
                       <%= a.description %>  

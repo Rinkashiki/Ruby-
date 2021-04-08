@@ -7,28 +7,28 @@
 </div>
 <div>
   <h2 class="timer center rounded" id="timer"></h2><br>
-  <h3>Respuestas</h3>
-  <% if !@answers.blank? %>
-    <% form_tag 'activities_users/doing_activity' do %>
-    <% @answers.each do |a| %>
-      <div class="center topic bg-secondary question rounded">
-        <%= radio_button_tag :user_answer, a.id %> 
-        <!--<div id="rates">
-          <input type="radio" name="answer" value= <%= a.id %> > <%= a.description %> 
-        </div>-->
-        &emsp; 
-        <%= a.description %>
-      </div>
+  <h3>Respuestas</h3><!--poner id en form_tag para acceder desde js y desde ahi hacer .submit-->
+  <%= form_tag 'doing_activity_post', id: 'response' do %>
+    <% if !@answers.blank? %>
+      <% @answers.each do |a| %>
+        <div class="center topic bg-secondary question rounded">
+          <%= radio_button_tag :user_answer, a.id %> 
+          <!--<div id="rates">
+            <input type="radio" name="answer" value= <%= a.id %> > <%= a.description %> 
+          </div>-->
+          &emsp; 
+          <%= a.description %>
+        </div>
+      <% end %>
     <% end %>
-    <% end %>
-  <% end %>
-  <% if @n_question < @total_questions - 1 %>
     <div class="center mb-5">
-      <%= link_to 'Siguiente', doing_activity_path(activity: @activity.id, n_question: @n_question + 1), class: 'btn btn-primary' %>
-    </div> 
-  <% else %>
-    <div class="center mb-5">
-      <%= link_to 'Finalizar actividad', activities_users_path, class: 'btn btn-primary' %>
+      <%= hidden_field_tag :activity, @activity.id %>
+      <%= hidden_field_tag :n_question, @n_question%>
+      <% if @n_question < @total_questions - 1 %>
+        <%= submit_tag 'Siguiente', class: 'btn btn-primary' %>
+      <% else %>
+        <%= submit_tag 'Finalizar actividad', class: 'btn btn-primary' %>
+      <% end %>
     </div> 
   <% end %>
 </div>
@@ -48,11 +48,7 @@
       }
 
       if(countdown <= 0){
-        if (<%= @n_question %> < <%= @total_questions - 1 %>){
-          window.location.href="/activities_users/doing_activity?activity=<%= @activity.id %>&n_question=<%= @n_question + 1 %>"
-        } else{
-          window.location.href="/activities_users"
-        }
+        document.getElementById("response").submit();
       }
     }, 1000);
   });
