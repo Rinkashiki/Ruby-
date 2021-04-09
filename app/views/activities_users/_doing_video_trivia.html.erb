@@ -5,7 +5,7 @@
     <h3>Video</h3>
     <p><%= video_tag @clip.video.to_s, autoplay: true, class: "video", id: "video" %></p>
   </div>
-  <div class="not-visible", id="response">
+  <div class="not-visible", id="answer-content">
     <div class="elem activity rounded">
       <p>Pregunta: <%= @question.question %></p>
       <p>Tiempo para responder: <%= @question.response_time %>s</p>
@@ -13,22 +13,24 @@
     <div>
       <h2 class="timer center rounded" id="timer"></h2><br>
       <h3>Respuestas</h3>
-      <% if !@answers.blank? %>
-        <% @answers.each do |a| %>
-          <div class="center topic bg-secondary rounded">
-          <%= radio_button_tag :user_answer, a.description %>
-          &emsp;
-          <%= a.description %>
-          </div>
+      <%= form_tag 'doing_activity_post', id: 'response' do %>
+        <% if !@answers.blank? %>
+          <% @answers.each do |a| %>
+            <div class="center topic bg-secondary rounded">
+              <%= radio_button_tag :user_answer, a.id %>
+              &emsp;
+              <%= a.description %>
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
-      <% if @n_question < @total_questions - 1 %>
         <div class="center mb-5">
-          <%= link_to 'Siguiente', doing_activity_path(activity: @activity.id, n_question: @n_question + 1), class: 'btn btn-primary' %>
-        </div> 
-      <% else %>
-        <div class="center mb-5">
-          <%= link_to 'Finalizar actividad', activities_users_path, class: 'btn btn-primary' %>
+          <%= hidden_field_tag :activity, @activity.id %>
+          <%= hidden_field_tag :n_question, @n_question%>
+          <% if @n_question < @total_questions - 1 %>
+            <%= submit_tag 'Siguiente', class: 'btn btn-primary' %>
+          <% else %>
+            <%= submit_tag 'Finalizar actividad', class: 'btn btn-primary' %>
+          <% end %>
         </div> 
       <% end %>
     </div>
@@ -39,7 +41,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('#video').on('ended', function(){
-      $('#response').toggleClass('not-visible');
+      $('#answer-content').toggleClass('not-visible');
       var countdown = <%= @question.response_time.to_i %>
       var x = setInterval(function() {
         --countdown
@@ -51,11 +53,7 @@
         }
 
         if(countdown <= 0){
-          if (<%= @n_question %> < <%= @total_questions - 1 %>){
-            window.location.href="/activities_users/doing_activity?activity=<%= @activity.id %>&n_question=<%= @n_question + 1 %>"
-          } else{
-            window.location.href="/activities_users"
-          }
+          document.getElementById("response").submit();
         }
       }, 1000);
     });

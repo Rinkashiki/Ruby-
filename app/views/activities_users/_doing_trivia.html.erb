@@ -1,37 +1,34 @@
 <br>
 <div class="container center">
-<h2>Trivia</h2>
-<div class="elem activity rounded">
-  <p>Pregunta: <%= @question.question %></p>
-  <p>Tiempo para responder: <%= @question.response_time %>s</p>
-</div>
-<div>
-  <h2 class="timer center rounded" id="timer"></h2><br>
-  <h3>Respuestas</h3><!--poner id en form_tag para acceder desde js y desde ahi hacer .submit-->
-  <%= form_tag 'doing_activity_post', id: 'response' do %>
-    <% if !@answers.blank? %>
-      <% @answers.each do |a| %>
-        <div class="center topic bg-secondary question rounded">
-          <%= radio_button_tag :user_answer, a.id %> 
-          <!--<div id="rates">
-            <input type="radio" name="answer" value= <%= a.id %> > <%= a.description %> 
-          </div>-->
-          &emsp; 
-          <%= a.description %>
-        </div>
+  <h2>Trivia</h2>
+  <div class="elem activity rounded">
+    <p>Pregunta: <%= @question.question %></p>
+    <p>Tiempo para responder: <%= @question.response_time %>s</p>
+  </div>
+  <div>
+    <h2 class="timer center rounded" id="timer"></h2><br>
+    <h3>Respuestas</h3>
+    <%= form_tag 'doing_activity_post', id: 'response' do %>
+      <% if !@answers.blank? %>
+        <% @answers.each do |a| %>
+          <div class="center topic bg-secondary question rounded">
+            <%= radio_button_tag :user_answer, a.id %> 
+            &emsp; 
+            <%= a.description %>
+          </div>
+        <% end %>
       <% end %>
+      <div class="center mb-5">
+        <%= hidden_field_tag :activity, @activity.id %>
+        <%= hidden_field_tag :n_question, @n_question%>
+        <% if @n_question < @total_questions - 1 %>
+          <%= submit_tag 'Siguiente', class: 'btn btn-primary' %>
+        <% else %>
+          <%= submit_tag 'Finalizar actividad', class: 'btn btn-primary' %>
+        <% end %>
+      </div> 
     <% end %>
-    <div class="center mb-5">
-      <%= hidden_field_tag :activity, @activity.id %>
-      <%= hidden_field_tag :n_question, @n_question%>
-      <% if @n_question < @total_questions - 1 %>
-        <%= submit_tag 'Siguiente', class: 'btn btn-primary' %>
-      <% else %>
-        <%= submit_tag 'Finalizar actividad', class: 'btn btn-primary' %>
-      <% end %>
-    </div> 
-  <% end %>
-</div>
+  </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

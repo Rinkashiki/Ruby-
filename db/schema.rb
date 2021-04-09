@@ -43,11 +43,16 @@ ActiveRecord::Schema.define(version: 2021_04_07_114936) do
 
   create_table "activity_user_answers", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "activities_users_id", null: false
-    t.bigint "answer_id", null: false
+    t.bigint "answer_id"
+    t.bigint "decision_id"
+    t.bigint "sanction_id"
+    t.text "open_question"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["activities_users_id"], name: "index_activity_user_answers_on_activities_users_id"
     t.index ["answer_id"], name: "index_activity_user_answers_on_answer_id"
+    t.index ["decision_id"], name: "index_activity_user_answers_on_decision_id"
+    t.index ["sanction_id"], name: "index_activity_user_answers_on_sanction_id"
   end
 
   create_table "answers", charset: "utf8mb4", force: :cascade do |t|
@@ -142,6 +147,8 @@ ActiveRecord::Schema.define(version: 2021_04_07_114936) do
   add_foreign_key "activities_users", "users"
   add_foreign_key "activity_user_answers", "activities_users", column: "activities_users_id"
   add_foreign_key "activity_user_answers", "answers"
+  add_foreign_key "activity_user_answers", "decisions"
+  add_foreign_key "activity_user_answers", "sanctions"
   add_foreign_key "answers", "questions"
   add_foreign_key "clips", "decisions"
   add_foreign_key "clips", "questions"

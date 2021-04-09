@@ -45,8 +45,6 @@ class ActivitiesUsersController < ApplicationController
 
       def doing_activity_post
 
-        # Save user answer
-
         # Extract question count 
         query = "SELECT q.* FROM questions q JOIN activities_questions aq ON q.id = aq.question_id 
         where aq.activity_id = '#{@activity[ :id]}'"
@@ -56,17 +54,58 @@ class ActivitiesUsersController < ApplicationController
 
         @n_question = params[ :n_question].to_i
 
+        @question = questions[@n_question]
+
         # Extract the activity_user entry
         query = "SELECT * from activities_users WHERE activity_id = '#{@activity[ :id]}' 
         AND user_id = '#{helpers.current_user[ :id]}'"
 
         activity_user = ActiveRecord::Base.connection.exec_query(query).rows
     
-        # Save the answer associated with the activity and the user in DB
-        query = "INSERT into activity_user_answers (activities_users_id, answer_id, created_at, updated_at) 
-        values ('#{activity_user[0][0]}', '#{params[ :user_answer]}', now(), now())"
+        # Save the answer associated with the activity and the user in DB. For Trivia and Video Trivia
+        if @question.question_type == "Trivia" || @question.question_type == "Video Trivia"
+          if !params[ :user_answer].nil?
+            query = "INSERT into activity_user_answers (activities_users_id, answer_id, created_at, updated_at) 
+            values ('#{activity_user[0][0]}', '#{params[ :user_answer]}', now(), now())"
+          else
+            query = "INSERT into activity_user_answers (activities_users_id, created_at, updated_at) 
+            values ('#{activity_user[0][0]}', now(), now())"
+          end
 
-        ActiveRecord::Base.connection.exec_query(query)
+          ActiveRecord::Base.connection.exec_query(query)
+        end
+
+        # Save the decision and sanction associated with the activity and the user in DB. For Video Test
+        if @question.question_type == "Video Test"
+          if !params[ :user_decision].nil? || !params[ :user_sanction].nil?
+            query = "INSERT into activity_user_answers (activities_users_id, decision_id, sanction_id, created_at, updated_at) 
+            values ('#{activity_user[0][0]}', '#{params[ :user_decision]}', '#{params[ :user_sanction]}', now(), now())"
+          elsif params[ :user_decision].nil? || !params[ :user_sanction].nil?
+            query = "INSERT into activity_user_answers (activities_users_id, sanction_id, created_at, updated_at) 
+            values ('#{activity_user[0][0]}', '#{params[ :user_sanction]}', now(), now())"
+          elsif params[ :user_sanction].nil? || !params[ :user_decision].nil?
+            query = "INSERT into activity_user_answers (activities_users_id, decision_id, created_at, updated_at) 
+            values ('#{activity_user[0][0]}', '#{params[ :user_decision]}', now(), now())"
+          else
+            query = "INSERT into activity_user_answers (activities_users_id, created_at, updated_at) 
+            values ('#{activity_user[0][0]}', now(), now())"
+          end
+
+          ActiveRecord::Base.connection.exec_query(query)
+        end
+
+        # Save the open_question associated with the activity and the user in DB. For Open Question
+        if @question.question_type == "Pregunta Abierta"
+          if !params[ :open_question].nil?
+            query = "INSERT into activity_user_answers (activities_users_id, open_question, created_at, updated_at) 
+            values ('#{activity_user[0][0]}', '#{params[ :open_question]}', now(), now())"
+          else
+            query = "INSERT into activity_user_answers (activities_users_id, created_at, updated_at) 
+            values ('#{activity_user[0][0]}', now(), now())"
+          end
+
+          ActiveRecord::Base.connection.exec_query(query)
+        end
 
         if @n_question < total_questions - 1 
           redirect_to doing_activity_path(activity: @activity.id, n_question: @n_question + 1)
@@ -84,12 +123,27 @@ class ActivitiesUsersController < ApplicationController
         
         @questions = Question.find_by_sql(query)
 
-        # Extract the answers from activity_user_answers 
-        query = "SELECT a.* FROM answers a JOIN (SELECT aua.* FROM activity_user_answers aua JOIN activities_users au
-         ON aua.activities_users_id = au.id WHERE au.activity_id = '#{@activity[ :id]}' AND 
-         au.user_id = '#{helpers.current_user[ :id]}') AS x ON a.id = x.answer_id"
+        #Extract activity_user_answers entries
+        query = "SELECT aua.* FROM activity_user_answers aua JOIN activities_users au
+        ON aua.activities_users_id = au.id WHERE au.activity_id = '#{@activity[ :id]}' AND 
+        au.user_id = '#{helpers.current_user[ :id]}'"
 
-        @user_answers = Answer.find_by_sql(query)
+        @user_answers = ActiveRecord::Base.connection.exec_query(query)
+
+        # Extract decisions and sanctions from questions
+        @decisions = Array.new
+        @sanctions = Array.new
+
+        @questions.each do |q|
+          if !q.clip_id.nil?
+            clip = Clip.find(q.clip_id)
+            @decisions.push(clip.decision_id)
+            @sanctions.push(clip.sanction_id)
+          else
+            @decisions.push(nil)
+            @sanctions.push(nil)
+          end
+        end
 
       end
 
