@@ -16,6 +16,11 @@ class ActivitiesUsersController < ApplicationController
         where '#{helpers.current_user[ :id]}' = au.user_id"
   
         @activities = Activity.find_by_sql(query)
+
+        query = "SELECT * from activities_users WHERE user_id = '#{helpers.current_user[ :id]}'"
+
+        @activities_user = ActiveRecord::Base.connection.exec_query(query)
+
       end
 
       def doing_activity
@@ -77,13 +82,13 @@ class ActivitiesUsersController < ApplicationController
 
         # Save the decision and sanction associated with the activity and the user in DB. For Video Test
         if @question.question_type == "Video Test"
-          if !params[ :user_decision].nil? || !params[ :user_sanction].nil?
+          if !params[ :user_decision].nil? && !params[ :user_sanction].nil?
             query = "INSERT into activity_user_answers (activities_users_id, decision_id, sanction_id, created_at, updated_at) 
             values ('#{activity_user[0][0]}', '#{params[ :user_decision]}', '#{params[ :user_sanction]}', now(), now())"
-          elsif params[ :user_decision].nil? || !params[ :user_sanction].nil?
+          elsif params[ :user_decision].nil? && !params[ :user_sanction].nil?
             query = "INSERT into activity_user_answers (activities_users_id, sanction_id, created_at, updated_at) 
             values ('#{activity_user[0][0]}', '#{params[ :user_sanction]}', now(), now())"
-          elsif params[ :user_sanction].nil? || !params[ :user_decision].nil?
+          elsif !params[ :user_decision].nil? && params[ :user_sanction].nil?
             query = "INSERT into activity_user_answers (activities_users_id, decision_id, created_at, updated_at) 
             values ('#{activity_user[0][0]}', '#{params[ :user_decision]}', now(), now())"
           else
@@ -110,7 +115,11 @@ class ActivitiesUsersController < ApplicationController
         if @n_question < total_questions - 1 
           redirect_to doing_activity_path(activity: @activity.id, n_question: @n_question + 1)
         else
-          redirect_to finish_activity_path(activity: @activity.id)
+          if Time.now.strftime("%d/%m/%Y") >= @activity.result_date.strftime("%d/%m/%Y")
+            redirect_to finish_activity_path(activity: @activity.id)
+          else
+            redirect_to activities_users_path
+          end
         end
 
       end

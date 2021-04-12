@@ -36,7 +36,7 @@
                   <%= a.description %>  
                 </div>
               <% end %>
-              <% if !@user_answers[i]['answer_id'].nil? %>
+              <% if @user_answers[i]['answer_id'].nil? %>
                 <div class="center topic question bg-secondary rounded">
                   <p> Pregunta no respondida </p>  
                 </div>

@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2021_04_07_114936) do
   create_table "activities_users", charset: "utf8mb4", force: :cascade do |t|
     t.bigint "activity_id", null: false
     t.bigint "user_id", null: false
+    t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["activity_id"], name: "index_activities_users_on_activity_id"
