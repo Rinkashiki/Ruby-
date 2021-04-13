@@ -11,7 +11,7 @@
       <p>Tiempo para responder: <%= @question.response_time %>s</p>
     </div>
     <div>
-      <h2 class="timer center rounded" id="timer"></h2><br>
+      <h2 class="timer center rounded" id="timer"><%= "0" + (@question.response_time / 60).round().to_s + ":" + (@question.response_time % 60).to_s %></h2><br>
       <h3>Respuestas</h3>
       <%= form_tag 'doing_activity_post', id: 'response' do %>
         <% if !@answers.blank? %>

@@ -22,12 +22,18 @@
       <%= render 'doing_open_question' %>
     <% end %>
   </div>
+  <p class="center m-5"><%= link_to 'Continuar más tarde', activities_users_path(activity: @activity.id), class: 'btn btn-primary' %></p>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
-    function disableBrowserBack(){window.history.forward();}
-    window.onunload=function() { disableBrowserBack() };
+    window.history.pushState(null, "", window.location.href);        
+
+      window.onpopstate = function() {
+
+          window.history.pushState(null, "", window.location.href);
+
+      };
   });
 </script>

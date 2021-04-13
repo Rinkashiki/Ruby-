@@ -24,7 +24,24 @@
               <% if Time.now.strftime("%d/%m/%Y") >= a.result_date.strftime("%d/%m/%Y") && @activities_user.find{|x| x['activity_id'] == a.id}['status'] == 'Finalizada'%>
                 <p><%= link_to 'Resultados', finish_activity_path(activity: a.id), class: 'btn btn-primary' %></p>
               <% end %>
-            </div><!-- && @activity_user.status == "Finalizada" -->
+              <% if a.initial_date.strftime("%d/%m/%Y") == Time.now.strftime("%d/%m/%Y") && @activities_user.find{|x| x['activity_id'] == a.id}['status'] == 'Pausada'%>
+                <p><%= link_to 'Continuar actividad', doing_activity_path(activity: a.id, n_question: @n_question), 
+                data: {confirm:"Va a reanudar la actividad '#{a.name}'. ¿Desea continuar?"}, class: 'btn btn-primary' %></p>
+              <% end %>
+            </div>
           <% end %>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    window.history.pushState(null, "", window.location.href);        
+
+      window.onpopstate = function() {
+
+          window.history.pushState(null, "", window.location.href);
+
+      };
+  });
+</script>

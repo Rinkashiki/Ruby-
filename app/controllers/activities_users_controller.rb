@@ -6,12 +6,32 @@ class ActivitiesUsersController < ApplicationController
     # Check user is logged
     before_action :authorized 
 
+    # Prevent from clicking back button 
+    #before_action :set_cache_buster, only: [ :doing_activity]
+
     skip_before_action :verify_authenticity_token, only: [ :doing_activity_post]
 
     # Extract the current activity before any method is executed
     before_action :set_activity, only: [ :doing_activity, :doing_activity_post, :finish_activity]
 
-    def index
+      def index
+
+        # For paused activity
+        if !params[ :activity].nil?
+          # Update activity_user status
+          query = "UPDATE activities_users SET status = 'Pausada' WHERE activity_id = '#{params[ :activity]}' AND  
+          user_id = '#{helpers.current_user[ :id]}'"
+
+          ActiveRecord::Base.connection.exec_query(query)   
+        end
+
+           # Extract previously answered questions
+           #query = "SELECT COUNT(aua.activities_users_id) FROM activity_user_answers aua JOIN activities_users au ON 
+           #aua.activities_users_id = au.id WHERE au.activity_id = '#{@activity[ :id]}' AND  
+           #au.user_id = '#{helpers.current_user[ :id]}'"
+   
+           #@answered_questions = ActiveRecord::Base.connection.exec_query(query)
+
         query = "SELECT a.* from activities a JOIN activities_users au ON a.id = au.activity_id 
         where '#{helpers.current_user[ :id]}' = au.user_id"
   
@@ -139,6 +159,12 @@ class ActivitiesUsersController < ApplicationController
 
         @user_answers = ActiveRecord::Base.connection.exec_query(query)
 
+        # Update activity_user status
+        query = "UPDATE activities_users SET status = 'Finalizada' WHERE activity_id = '#{@activity[ :id]}' AND  
+        user_id = '#{helpers.current_user[ :id]}'"
+
+        ActiveRecord::Base.connection.exec_query(query)
+
         # Extract decisions and sanctions from questions
         @decisions = Array.new
         @sanctions = Array.new
@@ -160,6 +186,14 @@ class ActivitiesUsersController < ApplicationController
 
       def set_activity
         @activity = Activity.find params[ :activity]
+      end
+
+      protected
+
+      def set_cache_buster
+        response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "#{1.year.ago}"
       end
 
 end
