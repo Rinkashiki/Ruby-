@@ -4,6 +4,7 @@ class CreateActivitiesUsers < ActiveRecord::Migration[6.1]
       t.references :activity, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
       t.string :status
+      t.integer :last_question
 
       t.timestamps
     end

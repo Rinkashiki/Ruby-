@@ -118,8 +118,8 @@ class ActivitiesController < ApplicationController
     def add_activity_user_post
       @user = User.find params[ :user]
 
-      query = "INSERT into activities_users (activity_id, user_id, status, created_at, updated_at) 
-              values ('#{@activity.id}', '#{@user.id}', 'Disponible', now(), now())"
+      query = "INSERT into activities_users (activity_id, user_id, status, last_question, created_at, updated_at) 
+              values ('#{@activity.id}', '#{@user.id}', 'Disponible', 0, now(), now())"
       ActiveRecord::Base.connection.exec_query(query)
 
       flash[ :alert] = 'Successfully added user'

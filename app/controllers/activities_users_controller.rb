@@ -7,7 +7,7 @@ class ActivitiesUsersController < ApplicationController
     before_action :authorized 
 
     # Prevent from clicking back button 
-    #before_action :set_cache_buster, only: [ :doing_activity]
+    #before_action :set_cache_buster, only: [ :index, :doing_activity]
 
     skip_before_action :verify_authenticity_token, only: [ :doing_activity_post]
 
@@ -25,19 +25,12 @@ class ActivitiesUsersController < ApplicationController
           ActiveRecord::Base.connection.exec_query(query)   
         end
 
-           # Extract previously answered questions
-           #query = "SELECT COUNT(aua.activities_users_id) FROM activity_user_answers aua JOIN activities_users au ON 
-           #aua.activities_users_id = au.id WHERE au.activity_id = '#{@activity[ :id]}' AND  
-           #au.user_id = '#{helpers.current_user[ :id]}'"
-   
-           #@answered_questions = ActiveRecord::Base.connection.exec_query(query)
-
         query = "SELECT a.* from activities a JOIN activities_users au ON a.id = au.activity_id 
         where '#{helpers.current_user[ :id]}' = au.user_id"
   
         @activities = Activity.find_by_sql(query)
 
-        query = "SELECT * from activities_users WHERE user_id = '#{helpers.current_user[ :id]}'"
+        query = "SELECT * from activities_users WHERE user_id = '#{helpers.current_user[ :id]}' ORDER BY activity_id"
 
         @activities_user = ActiveRecord::Base.connection.exec_query(query)
 
@@ -133,6 +126,12 @@ class ActivitiesUsersController < ApplicationController
         end
 
         if @n_question < total_questions - 1 
+          # Update last_question in activity_user entry
+          query = "UPDATE activities_users SET last_question = '#{@n_question + 1}' WHERE activity_id = '#{params[ :activity]}' AND  
+          user_id = '#{helpers.current_user[ :id]}'"
+
+          ActiveRecord::Base.connection.exec_query(query)
+
           redirect_to doing_activity_path(activity: @activity.id, n_question: @n_question + 1)
         else
           if Time.now.strftime("%d/%m/%Y") >= @activity.result_date.strftime("%d/%m/%Y")

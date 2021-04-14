@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_04_07_114936) do
     t.bigint "activity_id", null: false
     t.bigint "user_id", null: false
     t.string "status"
+    t.integer "last_question"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["activity_id"], name: "index_activities_users_on_activity_id"
