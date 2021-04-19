@@ -6,6 +6,9 @@ class ActivitiesUsersController < ApplicationController
     # Check user is logged
     before_action :authorized 
 
+    # Set last action
+    #after_action :set_action, only: [ :doing_activity]
+
     # Prevent from clicking back button 
     #before_action :set_cache_buster, only: [ :index, :doing_activity]
 
@@ -46,22 +49,22 @@ class ActivitiesUsersController < ApplicationController
 
         @n_question = params[ :n_question].to_i
 
-        if @n_question < activity_user[0][4]
+        #if @n_question < activity_user[0][4]
           ##########Actualizar numero de tries##############
 
           # Delete activity_user_answers entries
-          query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0][0]}'"
+          #query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0][0]}'"
 
-          ActiveRecord::Base.connection.exec_query(query)
+          #ActiveRecord::Base.connection.exec_query(query)
 
           # Reset activity_user status and last question
-          query = "UPDATE activities_users SET status = 'Disponible', last_question = '0' WHERE activity_id = '#{params[ :activity]}' AND  
-          user_id = '#{helpers.current_user[ :id]}'"
+          #query = "UPDATE activities_users SET status = 'Disponible', last_question = '0' WHERE activity_id = '#{params[ :activity]}' AND  
+          #user_id = '#{helpers.current_user[ :id]}'"
 
-          ActiveRecord::Base.connection.exec_query(query) 
+          #ActiveRecord::Base.connection.exec_query(query) 
 
-          redirect_to activities_users_path
-        end
+          #redirect_to activities_users_path
+        #end
 
         # For all questions
         query = "SELECT q.* from questions q JOIN activities_questions aq ON q.id = aq.question_id 
@@ -216,6 +219,10 @@ class ActivitiesUsersController < ApplicationController
         response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
         response.headers["Pragma"] = "no-cache"
         response.headers["Expires"] = "#{1.year.ago}"
+      end
+
+      def set_action(action_name)
+        session[:action]= action_name
       end
 
 end

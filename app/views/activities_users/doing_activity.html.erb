@@ -1,5 +1,5 @@
 <%= stylesheet_link_tag 'users' %>
-<div class="container">
+<div class="container", id="container">
   <br>
   <div class="center handheld_display">
     <% flash.each do |type, msg| %>
@@ -28,12 +28,16 @@
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
-    window.history.pushState(null, "", window.location.href);        
+    function showPopUp(e) {
+      if(!e) e = window.event;
+      e.cancelBubble = true;
+      e.returnValue = 'You sure you want to leave?'; 
+      if (e.stopPropagation) {
+          e.stopPropagation();
+          e.preventDefault();
+      }
+    }
+    window.onbeforeunload = showPopUp;
 
-      window.onpopstate = function() {
-
-          window.history.pushState(null, "", window.location.href);
-
-      };
   });
 </script>-->

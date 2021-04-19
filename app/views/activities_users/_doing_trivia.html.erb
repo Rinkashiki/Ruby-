@@ -22,9 +22,9 @@
         <%= hidden_field_tag :activity, @activity.id %>
         <%= hidden_field_tag :n_question, @n_question%>
         <% if @n_question < @total_questions - 1 %>
-          <%= submit_tag 'Siguiente', class: 'btn btn-primary' %>
+          <%= submit_tag 'Siguiente', class: 'btn btn-primary', id: 'submit-response' %>
         <% else %>
-          <%= submit_tag 'Finalizar actividad', class: 'btn btn-primary' %>
+          <%= submit_tag 'Finalizar actividad', class: 'btn btn-primary', id: 'submit-response' %>
         <% end %>
       </div> 
     <% end %>
@@ -48,5 +48,13 @@
         document.getElementById("response").submit();
       }
     }, 1000);
+
+    let clicked = false;
+    document.getElementById("submit-response").addEventListener('onclick', () => clicked = true);
+    window.addEventListener('beforeunload', (event) => {
+      if (!clicked) {
+        event.returnValue = 'You sure you want to leave?'; 
+      }
+    });
   });
 </script>
