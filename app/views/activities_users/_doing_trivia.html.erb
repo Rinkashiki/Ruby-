@@ -48,13 +48,5 @@
         document.getElementById("response").submit();
       }
     }, 1000);
-
-    let clicked = false;
-    document.getElementById("submit-response").addEventListener('onclick', () => clicked = true);
-    window.addEventListener('beforeunload', (event) => {
-      if (!clicked) {
-        event.returnValue = 'You sure you want to leave?'; 
-      }
-    });
   });
 </script>

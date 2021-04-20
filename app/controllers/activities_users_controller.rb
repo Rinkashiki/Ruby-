@@ -15,7 +15,7 @@ class ActivitiesUsersController < ApplicationController
     skip_before_action :verify_authenticity_token, only: [ :doing_activity_post]
 
     # Extract the current activity before any method is executed
-    before_action :set_activity, only: [ :doing_activity, :doing_activity_post, :finish_activity]
+    before_action :set_activity, only: [ :doing_activity, :doing_activity_post, :finish_activity, :reset_activity]
 
       def index
 
@@ -205,6 +205,28 @@ class ActivitiesUsersController < ApplicationController
           end
         end
 
+      end
+
+      def reset_activity
+        
+        # For prevent going back while doing an activity. Delete answers.
+        query = "SELECT * from activities_users WHERE activity_id = '#{@activity[ :id]}' AND 
+        user_id = '#{helpers.current_user[ :id]}' ORDER BY activity_id"
+
+        activity_user = ActiveRecord::Base.connection.exec_query(query).rows
+
+        # Delete activity_user_answers entries
+        query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0][0]}'"
+
+        ActiveRecord::Base.connection.exec_query(query)
+
+        # Reset activity_user status and last question
+        query = "UPDATE activities_users SET status = 'Disponible', last_question = '0' WHERE activity_id = '#{params[ :activity]}' AND  
+        user_id = '#{helpers.current_user[ :id]}'"
+
+        ActiveRecord::Base.connection.exec_query(query) 
+
+        redirect_to activities_users_path
       end
 
       private 
