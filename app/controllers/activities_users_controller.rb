@@ -49,40 +49,40 @@ class ActivitiesUsersController < ApplicationController
 
         @n_question = params[ :n_question].to_i
 
-        #if @n_question < activity_user[0][4]
+        if @n_question < activity_user[0][4]
           ##########Actualizar numero de tries##############
-
+          #redirect_to reset_activity_path(activity: @activity.id)
           # Delete activity_user_answers entries
-          #query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0][0]}'"
+          query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0][0]}'"
 
-          #ActiveRecord::Base.connection.exec_query(query)
+          ActiveRecord::Base.connection.exec_query(query)
 
           # Reset activity_user status and last question
-          #query = "UPDATE activities_users SET status = 'Disponible', last_question = '0' WHERE activity_id = '#{params[ :activity]}' AND  
-          #user_id = '#{helpers.current_user[ :id]}'"
+          query = "UPDATE activities_users SET status = 'Disponible', last_question = '0' WHERE activity_id = '#{params[ :activity]}' AND  
+          user_id = '#{helpers.current_user[ :id]}'"
 
-          #ActiveRecord::Base.connection.exec_query(query) 
+          ActiveRecord::Base.connection.exec_query(query) 
 
-          #redirect_to activities_users_path
-        #end
+          redirect_to activities_users_path
+        else
+          # For all questions
+          query = "SELECT q.* from questions q JOIN activities_questions aq ON q.id = aq.question_id 
+          where aq.activity_id = '#{@activity[ :id]}'"
+          questions = Question.find_by_sql(query)
 
-        # For all questions
-        query = "SELECT q.* from questions q JOIN activities_questions aq ON q.id = aq.question_id 
-        where aq.activity_id = '#{@activity[ :id]}'"
-        questions = Question.find_by_sql(query)
-
-        @total_questions = questions.length()
+          @total_questions = questions.length()
         
-        @question = questions[@n_question] 
+          @question = questions[@n_question] 
 
-        @type = @question[ :question_type]
+          @type = @question[ :question_type]
 
-        # Extract answers of the current question
-        @answers = Answer.where(question_id: @question.id)
+          # Extract answers of the current question
+          @answers = Answer.where(question_id: @question.id)
 
-        # For Video Trivia and Video Test
-        if !@question.clip_id.nil?
-          @clip = Clip.find(@question.clip_id)
+          # For Video Trivia and Video Test
+          if !@question.clip_id.nil?
+            @clip = Clip.find(@question.clip_id)
+          end
         end
 
       end
@@ -184,8 +184,10 @@ class ActivitiesUsersController < ApplicationController
 
         @user_answers = ActiveRecord::Base.connection.exec_query(query)
 
-        # Update activity_user status
-        query = "UPDATE activities_users SET status = 'Finalizada' WHERE activity_id = '#{@activity[ :id]}' AND  
+        #### Grade calculation ####
+
+        # Update activity_user status and grade
+        query = "UPDATE activities_users SET status = 'Finalizada', user_grade = 5 WHERE activity_id = '#{@activity[ :id]}' AND  
         user_id = '#{helpers.current_user[ :id]}'"
 
         ActiveRecord::Base.connection.exec_query(query)

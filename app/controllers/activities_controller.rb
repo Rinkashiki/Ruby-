@@ -1,14 +1,20 @@
 class ActivitiesController < ApplicationController
 
     # Render navigation bar  
-    layout 'in_session', only: [ :index, :new, :show, :edit, :destroy, :add_question, :my_activities, :activity_users, :add_activity_user]
+    layout 'in_session', only: [ :index, :new, :show, :edit, :destroy, :add_question, :my_activities, :activity_users, 
+                                :add_activity_user, :activity_questions, :edit_activity_user]
 
     # Check user is logged
     before_action :authorized
 
+    skip_before_action :verify_authenticity_token, only: [ :update_activity_user]
+
     # Extract the current activity before any method is executed
     before_action :set_activity, only: [ :show, :edit, :update, :destroy, :add_question, :quit_activity_question, :add_activity_user, 
-                                        :add_activity_user_post, :activity_users, :quit_activity_user]
+                                        :add_activity_user_post, :activity_users, :quit_activity_user, :activity_questions,
+                                        :edit_activity_user, :update_activity_user]
+
+    before_action :set_user, only: [ :quit_activity_user, :add_activity_user_post, :edit_activity_user, :update_activity_user]                                    
 
     def index
         @activities = Activity.where(responsible: helpers.current_user[ :name])
@@ -26,9 +32,9 @@ class ActivitiesController < ApplicationController
 
         if !aux_activity.in?(activities)
           @activity = Activity.new activity_params
-          @activity[ :initial_date] = Time.now.strftime("%d/%m/%Y")
-          @activity[ :final_date] = Time.now.strftime("%d/%m/%Y")
-          @activity[ :result_date] = Time.now.strftime("%d/%m/%Y")
+          @activity[ :initial_date] = Time.now
+          @activity[ :final_date] = Time.now
+          @activity[ :result_date] = Time.now
           @activity[ :grade] = 5
           @activity[ :responsible] = helpers.current_user[ :name]
 
@@ -47,11 +53,6 @@ class ActivitiesController < ApplicationController
     end
 
     def show
-        # Extract questions associated with the current activity
-        query = "SELECT q.id, q.question, q.question_type FROM questions q JOIN activities_questions aq ON aq.question_id = q.id 
-        WHERE aq.activity_id = '#{@activity.id}'"
-
-        @questions = Question.find_by_sql(query)
     end
 
     def edit
@@ -60,6 +61,12 @@ class ActivitiesController < ApplicationController
     def update
       @activity.update(initial_date: params[ :activity][ :initial_date], final_date: params[ :activity][ :final_date], 
       result_date: params[ :activity][ :result_date], grade: params[ :activity][ :grade])
+
+      query = "UPDATE activities_users SET user_initial_date = '#{@activity.initial_date.to_date}', 
+      user_final_date = '#{@activity.final_date.to_date}', user_result_date = '#{@activity.result_date.to_date}'
+      WHERE activity_id = '#{@activity.id}'"
+
+      ActiveRecord::Base.connection.exec_query(query)
 
       flash[ :alert] = 'Succesfully edited!'
 
@@ -73,6 +80,14 @@ class ActivitiesController < ApplicationController
     end
 
     # Activity-Question Association Management
+    def activity_questions
+      # Extract questions associated with the current activity
+      query = "SELECT q.id, q.question, q.question_type FROM questions q JOIN activities_questions aq ON aq.question_id = q.id 
+      WHERE aq.activity_id = '#{@activity.id}'"
+
+      @questions = Question.find_by_sql(query)
+    end
+
     def quit_activity_question
       @question = Question.find params[ :question]
 
@@ -81,7 +96,7 @@ class ActivitiesController < ApplicationController
     
       flash[ :alert] = 'Successfully quit question'
     
-      redirect_to activity_path
+      redirect_to activity_questions_path
 
     end
 
@@ -106,8 +121,6 @@ class ActivitiesController < ApplicationController
 
     def quit_activity_user
 
-      @user = User.find params[ :user]
-
       query = "DELETE from activities_users WHERE activity_id = '#{@activity.id}' AND user_id = '#{@user.id}'"
       ActiveRecord::Base.connection.exec_query(query)
       
@@ -116,13 +129,33 @@ class ActivitiesController < ApplicationController
     end
 
     def add_activity_user_post
-      @user = User.find params[ :user]
 
-      query = "INSERT into activities_users (activity_id, user_id, status, last_question, created_at, updated_at) 
-              values ('#{@activity.id}', '#{@user.id}', 'Disponible', 0, now(), now())"
+      query = "INSERT into activities_users (activity_id, user_id, user_initial_date, user_final_date, user_result_date,
+       status, last_question, created_at, updated_at) values ('#{@activity.id}', '#{@user.id}', '#{@activity.initial_date.to_date}',
+       '#{@activity.final_date.to_date}', '#{@activity.result_date.to_date}', 'Disponible', 0, now(), now())"
       ActiveRecord::Base.connection.exec_query(query)
 
       flash[ :alert] = 'Successfully added user'
+
+      redirect_to activity_users_path
+    end
+
+    def edit_activity_user
+      query = "SELECT * from activities_users WHERE activity_id = '#{@activity[ :id]}' AND 
+      user_id = '#{@user.id}'"
+
+      @activity_user = ActiveRecord::Base.connection.exec_query(query).rows
+    end
+
+    def update_activity_user
+
+      query = "UPDATE activities_users SET user_initial_date = '#{params[ :user_initial_date]}', 
+      user_final_date = '#{params[ :user_final_date]}', user_result_date = '#{params[ :user_result_date]}'
+      WHERE activity_id = '#{@activity.id}' AND user_id = '#{@user.id}'"
+
+      ActiveRecord::Base.connection.exec_query(query)
+
+      flash[ :alert] = 'Succesfully edited!'
 
       redirect_to activity_users_path
     end
@@ -135,6 +168,10 @@ class ActivitiesController < ApplicationController
 
     def set_activity
         @activity = Activity.find params[ :id]
+    end
+
+    def set_user
+      @user = User.find params[ :user]
     end
 
 end

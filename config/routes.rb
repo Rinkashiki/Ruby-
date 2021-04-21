@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   # Routes for activities
   resources :activities, only: [ :index, :new, :create, :edit, :update, :show, :destroy]
 
+  get 'activities/:id/activity_questions', to: 'activities#activity_questions', as: 'activity_questions'
+
   get 'activities/:id/quit_activity_question', to: 'activities#quit_activity_question', as: 'quit_activity_question'
 
   get 'activities/:id/activity_users', to: 'activities#activity_users', as: 'activity_users'
@@ -48,6 +50,10 @@ Rails.application.routes.draw do
   get 'activities/:id/add_activity_user_post', to: 'activities#add_activity_user_post', as: 'add_activity_user_post'
 
   get 'activities/:id/quit_activity_user', to: 'activities#quit_activity_user', as: 'quit_activity_user'
+
+  get 'activities/:id/edit_activity_user', to: 'activities#edit_activity_user', as: 'edit_activity_user'
+
+  post 'activities/:id/update_activity_user', to: 'activities#update_activity_user', as: 'update_activity_user'
 
   # Routes for activities_users
   resources :activities_users, only: [ :index]
@@ -69,6 +75,11 @@ Rails.application.routes.draw do
 
   # Routes for answers
   resources :answers, only: [:index, :new, :create, :show, :destroy]
+
+  # Routes for evaluation
+  resources :evaluation, only: [ :index]
+
+  get 'evaluation/results', to: 'evaluation#results', as: 'results'  
 
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

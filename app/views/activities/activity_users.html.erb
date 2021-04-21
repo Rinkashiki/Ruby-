@@ -13,7 +13,8 @@
           <div class="center topic bg-secondary rounded">
             <p>Nombre: <%= u.name %></p>
             <p>Surname: <%= u.surname %></p>
-            <%= link_to '-', quit_activity_user_path(user: u[ :id]), class: 'btn btn-primary' %>
+            <p><%= link_to 'Editar fechas para este usuario', edit_activity_user_path(user: u[ :id]), class: 'btn btn-primary' %></p>
+            <p><%= link_to 'Quitar usuario', quit_activity_user_path(user: u[ :id]), class: 'btn btn-primary' %></p>
           </div>
         <% end %>
         <% if @users.length() < User.all.length() - 1 %>

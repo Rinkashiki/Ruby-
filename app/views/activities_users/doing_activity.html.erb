@@ -33,12 +33,7 @@
     window.addEventListener('beforeunload', (event) => {
       if (!clicked) {
         event.preventDefault();
-        result = confirm('You sure you want to leave?');
-        event.returnValue = result;
-        if(result){
-          window.location.href = "<%= reset_activity_path(activity: @activity.id) %>" 
-        }
-        
+        event.returnValue = confirm('You sure you want to leave?');;
       }
     });
   });
