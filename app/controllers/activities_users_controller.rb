@@ -45,15 +45,15 @@ class ActivitiesUsersController < ApplicationController
         query = "SELECT * from activities_users WHERE activity_id = '#{@activity[ :id]}' AND 
         user_id = '#{helpers.current_user[ :id]}' ORDER BY activity_id"
 
-        activity_user = ActiveRecord::Base.connection.exec_query(query).rows
+        activity_user = ActiveRecord::Base.connection.exec_query(query)
 
         @n_question = params[ :n_question].to_i
 
-        if @n_question < activity_user[0][4]
+        if @n_question < activity_user[0]['last_question']
           ##########Actualizar numero de tries##############
           #redirect_to reset_activity_path(activity: @activity.id)
           # Delete activity_user_answers entries
-          query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0][0]}'"
+          query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0]['id']}'"
 
           ActiveRecord::Base.connection.exec_query(query)
 
@@ -104,16 +104,16 @@ class ActivitiesUsersController < ApplicationController
         query = "SELECT * from activities_users WHERE activity_id = '#{@activity[ :id]}' 
         AND user_id = '#{helpers.current_user[ :id]}'"
 
-        activity_user = ActiveRecord::Base.connection.exec_query(query).rows
+        activity_user = ActiveRecord::Base.connection.exec_query(query)
     
         # Save the answer associated with the activity and the user in DB. For Trivia and Video Trivia
         if @question.question_type == "Trivia" || @question.question_type == "Video Trivia"
           if !params[ :user_answer].nil?
             query = "INSERT into activity_user_answers (activities_users_id, answer_id, created_at, updated_at) 
-            values ('#{activity_user[0][0]}', '#{params[ :user_answer]}', now(), now())"
+            values ('#{activity_user[0]['id']}', '#{params[ :user_answer]}', now(), now())"
           else
             query = "INSERT into activity_user_answers (activities_users_id, created_at, updated_at) 
-            values ('#{activity_user[0][0]}', now(), now())"
+            values ('#{activity_user[0]['id']}', now(), now())"
           end
 
           ActiveRecord::Base.connection.exec_query(query)
@@ -123,16 +123,16 @@ class ActivitiesUsersController < ApplicationController
         if @question.question_type == "Video Test"
           if !params[ :user_decision].nil? && !params[ :user_sanction].nil?
             query = "INSERT into activity_user_answers (activities_users_id, decision_id, sanction_id, created_at, updated_at) 
-            values ('#{activity_user[0][0]}', '#{params[ :user_decision]}', '#{params[ :user_sanction]}', now(), now())"
+            values ('#{activity_user[0]['id']}', '#{params[ :user_decision]}', '#{params[ :user_sanction]}', now(), now())"
           elsif params[ :user_decision].nil? && !params[ :user_sanction].nil?
             query = "INSERT into activity_user_answers (activities_users_id, sanction_id, created_at, updated_at) 
-            values ('#{activity_user[0][0]}', '#{params[ :user_sanction]}', now(), now())"
+            values ('#{activity_user[0]['id']}', '#{params[ :user_sanction]}', now(), now())"
           elsif !params[ :user_decision].nil? && params[ :user_sanction].nil?
             query = "INSERT into activity_user_answers (activities_users_id, decision_id, created_at, updated_at) 
-            values ('#{activity_user[0][0]}', '#{params[ :user_decision]}', now(), now())"
+            values ('#{activity_user[0]['id']}', '#{params[ :user_decision]}', now(), now())"
           else
             query = "INSERT into activity_user_answers (activities_users_id, created_at, updated_at) 
-            values ('#{activity_user[0][0]}', now(), now())"
+            values ('#{activity_user[0]['id']}', now(), now())"
           end
 
           ActiveRecord::Base.connection.exec_query(query)
@@ -142,10 +142,10 @@ class ActivitiesUsersController < ApplicationController
         if @question.question_type == "Pregunta Abierta"
           if !params[ :open_question].nil?
             query = "INSERT into activity_user_answers (activities_users_id, open_question, created_at, updated_at) 
-            values ('#{activity_user[0][0]}', '#{params[ :open_question]}', now(), now())"
+            values ('#{activity_user[0]['id']}', '#{params[ :open_question]}', now(), now())"
           else
             query = "INSERT into activity_user_answers (activities_users_id, created_at, updated_at) 
-            values ('#{activity_user[0][0]}', now(), now())"
+            values ('#{activity_user[0]['id']}', now(), now())"
           end
 
           ActiveRecord::Base.connection.exec_query(query)
@@ -215,10 +215,10 @@ class ActivitiesUsersController < ApplicationController
         query = "SELECT * from activities_users WHERE activity_id = '#{@activity[ :id]}' AND 
         user_id = '#{helpers.current_user[ :id]}' ORDER BY activity_id"
 
-        activity_user = ActiveRecord::Base.connection.exec_query(query).rows
+        activity_user = ActiveRecord::Base.connection.exec_query(query)
 
         # Delete activity_user_answers entries
-        query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0][0]}'"
+        query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0]['id']}'"
 
         ActiveRecord::Base.connection.exec_query(query)
 

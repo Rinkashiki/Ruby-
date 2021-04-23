@@ -81,6 +81,8 @@ Rails.application.routes.draw do
 
   get 'evaluation/results', to: 'evaluation#results', as: 'results'  
 
+  get 'evaluation/user_results', to: 'evaluation#user_results', as: 'user_results'
+
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
