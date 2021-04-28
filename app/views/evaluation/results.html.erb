@@ -18,10 +18,10 @@
         <p>E-mail: <%= u['email'] %></p>
         <% if @activities_users[i]['status'] == "Finalizada" %>
           <p>Nota: <%= @activities_users[i]['user_grade'] %></p>
+          <%= link_to 'Resultados de este usuario', user_results_path(user: u['id'], activity: @activity.id), class: 'btn btn-primary' %>
         <% else %>
-          <p>Nota: Actividad aún no realizada %></p>
+          <p>Nota: Actividad aún no realizada</p>
         <% end %>
-        <%= link_to 'Resultados de este usuario', user_results_path(user: u['id'], activity: @activity.id), class: 'btn btn-primary' %>
       </div>
     </div>
   <% end %>
