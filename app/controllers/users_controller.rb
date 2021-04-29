@@ -1,5 +1,7 @@
  class UsersController < ApplicationController
 
+  $crypt = ActiveSupport::MessageEncryptor.new(ENV['KEY'])
+
   # Render navigation bar
   layout 'in_session', only: [ :index, :edit]
 
@@ -31,11 +33,12 @@
       @profile = Profile.find_by_name('Usuario')
     end
     @user = @profile.users.new user_params
-    @user[ :password] = SecureRandom.hex
+    password = SecureRandom.alphanumeric
+    @user[ :password] = CRYPT.encrypt_and_sign(password)
     
     if @user.save
       # Send an email to new registered user with him/her credentials
-      UserMailer.with(user: @user).new_user_email.deliver_later
+      UserMailer.with(user: @user, password: password).new_user_email.deliver_later
       flash[ :alert] = 'Succesfully registered!'
       if logged_in?
         redirect_to users_path

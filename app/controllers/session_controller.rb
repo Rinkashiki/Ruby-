@@ -13,7 +13,7 @@ class SessionController < ApplicationController
 
   def create
     @user = User.find_by(name: params[ :name])
-    if @user && @user.password == params[ :password]
+    if @user && CRYPT.decrypt_and_verify(@user.password) == params[ :password]
       session[ :user_id] = @user.id
       redirect_to '/index'
     else
