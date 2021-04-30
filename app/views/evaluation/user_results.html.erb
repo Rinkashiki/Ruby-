@@ -21,7 +21,7 @@
           <% if q.question_type == "Trivia" ||  q.question_type == "Video Trivia" %>
             <h3>Respuestas</h3>
             <% Answer.where(question_id: q.id).each_with_index do |a| %>
-              <% if a.id == @user_answers[i]['answer_id'] %>
+              <% if !@user_answers[i]['answers'].nil? && @user_answers[i]['answers'].include?(a.id.to_s) %>
                 <% if a.option == "Falso" %>
                   <div class="center topic question wrong-answer rounded">
                     <%= a.description %>  
@@ -36,18 +36,22 @@
                   <%= a.description %>  
                 </div>
               <% end %>
-              <% if @user_answers[i]['answer_id'].nil? %>
-                <div class="center topic question bg-secondary rounded">
-                  <p> Pregunta no respondida </p>  
-                </div>
-              <% end %>
               <% if a.option == "Verdadero" %>
-                <% @correct_answer = a.description %>
+                <% @correct_answers.append(a.description) %>
               <% end %>
             <% end %>
+            <% if @user_answers[i]['answers'].nil? %>
+              <div class="center topic question bg-secondary rounded">
+                <p> Pregunta no respondida </p>  
+              </div>
+            <% end %>
             <div class="center topic question bg-success rounded">
-              <p>Respuesta correcta: <%= @correct_answer %></p>  
+              <p>Respuestas correctas:</p> 
+              <% @correct_answers.each do |ca| %>
+                <p><%= ca %></p> 
+              <% end %> 
             </div>
+            <% @correct_answers = [] %>
           <% end %>
           <% if q.question_type == "Video Test" %>
             <h3>Decisión</h3>

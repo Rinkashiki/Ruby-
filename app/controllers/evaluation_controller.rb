@@ -23,6 +23,8 @@ class EvaluationController < ApplicationController
     def user_results
         @user = User.find params[ :user]
 
+        @correct_answers = []
+
         # Extract questions
         query = "SELECT q.* from questions q JOIN activities_questions aq ON q.id = aq.question_id 
         where aq.activity_id = '#{@activity[ :id]}'"

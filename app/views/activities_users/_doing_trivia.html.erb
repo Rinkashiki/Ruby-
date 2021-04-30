@@ -12,7 +12,7 @@
       <% if !@answers.blank? %>
         <% @answers.each do |a| %>
           <div class="center topic bg-secondary question rounded">
-            <%= radio_button_tag :user_answer, a.id %> 
+            <%= check_box_tag 'answers_ids[]', a.id %> 
             &emsp; 
             <%= a.description %>
           </div>

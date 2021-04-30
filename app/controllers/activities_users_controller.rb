@@ -21,9 +21,9 @@ class ActivitiesUsersController < ApplicationController
 
         # For paused activity
         if !params[ :activity].nil?
-          # Update activity_user status
-          query = "UPDATE activities_users SET status = 'Pausada' WHERE activity_id = '#{params[ :activity]}' AND  
-          user_id = '#{helpers.current_user[ :id]}'"
+          # Update activity_user status and last_question
+          query = "UPDATE activities_users SET status = 'Pausada' WHERE activity_id = '#{params[ :activity]}' 
+          AND user_id = '#{helpers.current_user[ :id]}'"
 
           ActiveRecord::Base.connection.exec_query(query)   
         end
@@ -52,18 +52,8 @@ class ActivitiesUsersController < ApplicationController
         if @n_question < activity_user[0]['last_question']
           ##########Actualizar numero de tries##############
           #redirect_to reset_activity_path(activity: @activity.id)
-          # Delete activity_user_answers entries
-          query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0]['id']}'"
 
-          ActiveRecord::Base.connection.exec_query(query)
-
-          # Reset activity_user status and last question
-          query = "UPDATE activities_users SET status = 'Disponible', last_question = '0' WHERE activity_id = '#{params[ :activity]}' AND  
-          user_id = '#{helpers.current_user[ :id]}'"
-
-          ActiveRecord::Base.connection.exec_query(query) 
-
-          redirect_to activities_users_path
+          redirect_to activities_users_path(activity: @activity.id)
         else
           # For all questions
           query = "SELECT q.* from questions q JOIN activities_questions aq ON q.id = aq.question_id 
@@ -108,9 +98,9 @@ class ActivitiesUsersController < ApplicationController
     
         # Save the answer associated with the activity and the user in DB. For Trivia and Video Trivia
         if @question.question_type == "Trivia" || @question.question_type == "Video Trivia"
-          if !params[ :user_answer].nil?
-            query = "INSERT into activity_user_answers (activities_users_id, answer_id, created_at, updated_at) 
-            values ('#{activity_user[0]['id']}', '#{params[ :user_answer]}', now(), now())"
+          if !params[ :answers_ids].nil?
+            query = "INSERT into activity_user_answers (activities_users_id, answers, created_at, updated_at) 
+            values ('#{activity_user[0]['id']}', '#{params[ :answers_ids]}', now(), now())"
           else
             query = "INSERT into activity_user_answers (activities_users_id, created_at, updated_at) 
             values ('#{activity_user[0]['id']}', now(), now())"
@@ -207,28 +197,6 @@ class ActivitiesUsersController < ApplicationController
           end
         end
 
-      end
-
-      def reset_activity
-        
-        # For prevent going back while doing an activity. Delete answers.
-        query = "SELECT * from activities_users WHERE activity_id = '#{@activity[ :id]}' AND 
-        user_id = '#{helpers.current_user[ :id]}' ORDER BY activity_id"
-
-        activity_user = ActiveRecord::Base.connection.exec_query(query)
-
-        # Delete activity_user_answers entries
-        query = "DELETE FROM activity_user_answers WHERE activities_users_id = '#{activity_user[0]['id']}'"
-
-        ActiveRecord::Base.connection.exec_query(query)
-
-        # Reset activity_user status and last question
-        query = "UPDATE activities_users SET status = 'Disponible', last_question = '0' WHERE activity_id = '#{params[ :activity]}' AND  
-        user_id = '#{helpers.current_user[ :id]}'"
-
-        ActiveRecord::Base.connection.exec_query(query) 
-
-        redirect_to activities_users_path
       end
 
       private 
